@@ -4,7 +4,7 @@
 //#pragma warning(disable: 4996)
 
 
-#include "/home/neronsuper/Documents/vsc projects/Messanger/client/src/userData.cpp"
+#include "../src/userData.cpp"
 #include <vector>
 #include <string>
 #include <fstream>

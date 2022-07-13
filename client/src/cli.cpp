@@ -1,4 +1,4 @@
-#include "/home/neronsuper/Documents/vsc projects/Messanger/client/include/cli.h"
+#include "../include/cli.h"
 
 //CLI::CLI()
 //{

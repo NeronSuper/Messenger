@@ -1,4 +1,4 @@
-#include "/home/neronsuper/Documents/vsc projects/Messanger/client/include/cliMessage.h"
+#include "../include/cliMessage.h"
 
 CLImessage::CLImessage(UserData* _userData)
     : _userData(_userData)

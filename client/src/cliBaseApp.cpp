@@ -1,4 +1,4 @@
-#include "/home/neronsuper/Documents/vsc projects/Messanger/client/include/cliBaseApp.h"
+#include "../include/cliBaseApp.h"
 #include "cliPrivateUserData.cpp"
 #include "cliMessage.cpp"
 

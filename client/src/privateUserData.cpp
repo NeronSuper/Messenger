@@ -1,4 +1,4 @@
-#include "/home/neronsuper/Documents/vsc projects/Messanger/client/include/privateUserData.h"
+#include "../include/privateUserData.h"
 
 PrivateUserData::PrivateUserData()
 {

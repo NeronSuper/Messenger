@@ -4,8 +4,8 @@
 #include <vector>
 #include <memory>
 #include <map>
-#include "/home/neronsuper/Documents/vsc projects/Messanger/client/src/message.cpp"
-#include "/home/neronsuper/Documents/vsc projects/Messanger/client/src/privateUserData.cpp"
+#include "../src/message.cpp"
+#include "../src/privateUserData.cpp"
 
 class UserData
 {
