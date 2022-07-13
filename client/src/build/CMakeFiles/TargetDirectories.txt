@@ -1,3 +1,0 @@
-/home/neronsuper/Documents/vsc projects/Messanger/client/src/build/CMakeFiles/rebuild_cache.dir
-/home/neronsuper/Documents/vsc projects/Messanger/client/src/build/CMakeFiles/edit_cache.dir
-/home/neronsuper/Documents/vsc projects/Messanger/client/src/build/CMakeFiles/run.dir
