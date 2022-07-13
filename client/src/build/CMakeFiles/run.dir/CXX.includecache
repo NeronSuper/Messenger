@@ -1,0 +1,124 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/neronsuper/Documents/vsc projects/Messanger/client/include/baseApp.h
+../src/userData.cpp
+/home/neronsuper/Documents/vsc projects/Messanger/client/src/userData.cpp
+vector
+-
+string
+-
+fstream
+-
+iostream
+-
+sys/stat.h
+-
+memory
+-
+unistd.h
+-
+experimental/filesystem
+-
+
+/home/neronsuper/Documents/vsc projects/Messanger/client/include/cli.h
+userData.h
+/home/neronsuper/Documents/vsc projects/Messanger/client/include/userData.h
+
+/home/neronsuper/Documents/vsc projects/Messanger/client/include/cliBaseApp.h
+baseApp.h
+/home/neronsuper/Documents/vsc projects/Messanger/client/include/baseApp.h
+cli.h
+/home/neronsuper/Documents/vsc projects/Messanger/client/include/cli.h
+
+/home/neronsuper/Documents/vsc projects/Messanger/client/include/cliMessage.h
+cli.h
+/home/neronsuper/Documents/vsc projects/Messanger/client/include/cli.h
+baseApp.h
+/home/neronsuper/Documents/vsc projects/Messanger/client/include/baseApp.h
+
+/home/neronsuper/Documents/vsc projects/Messanger/client/include/cliPrivateUserData.h
+cli.h
+/home/neronsuper/Documents/vsc projects/Messanger/client/include/cli.h
+
+/home/neronsuper/Documents/vsc projects/Messanger/client/include/message.h
+string
+-
+ctime
+-
+
+/home/neronsuper/Documents/vsc projects/Messanger/client/include/privateUserData.h
+string
+-
+iostream
+-
+
+/home/neronsuper/Documents/vsc projects/Messanger/client/include/userData.h
+iostream
+-
+string
+-
+vector
+-
+memory
+-
+map
+-
+../src/message.cpp
+/home/neronsuper/Documents/vsc projects/Messanger/client/src/message.cpp
+../src/privateUserData.cpp
+/home/neronsuper/Documents/vsc projects/Messanger/client/src/privateUserData.cpp
+
+/home/neronsuper/Documents/vsc projects/Messanger/client/src/baseApp.cpp
+../include/baseApp.h
+/home/neronsuper/Documents/vsc projects/Messanger/client/include/baseApp.h
+
+/home/neronsuper/Documents/vsc projects/Messanger/client/src/cli.cpp
+../include/cli.h
+/home/neronsuper/Documents/vsc projects/Messanger/client/include/cli.h
+
+/home/neronsuper/Documents/vsc projects/Messanger/client/src/cliBaseApp.cpp
+../include/cliBaseApp.h
+/home/neronsuper/Documents/vsc projects/Messanger/client/include/cliBaseApp.h
+cliPrivateUserData.cpp
+/home/neronsuper/Documents/vsc projects/Messanger/client/src/cliPrivateUserData.cpp
+cliMessage.cpp
+/home/neronsuper/Documents/vsc projects/Messanger/client/src/cliMessage.cpp
+
+/home/neronsuper/Documents/vsc projects/Messanger/client/src/cliMessage.cpp
+../include/cliMessage.h
+/home/neronsuper/Documents/vsc projects/Messanger/client/include/cliMessage.h
+
+/home/neronsuper/Documents/vsc projects/Messanger/client/src/cliPrivateUserData.cpp
+../include/cliPrivateUserData.h
+/home/neronsuper/Documents/vsc projects/Messanger/client/include/cliPrivateUserData.h
+
+/home/neronsuper/Documents/vsc projects/Messanger/client/src/main.cpp
+baseApp.cpp
+/home/neronsuper/Documents/vsc projects/Messanger/client/src/baseApp.cpp
+cli.cpp
+/home/neronsuper/Documents/vsc projects/Messanger/client/src/cli.cpp
+cliBaseApp.cpp
+/home/neronsuper/Documents/vsc projects/Messanger/client/src/cliBaseApp.cpp
+ctime
+-
+
+/home/neronsuper/Documents/vsc projects/Messanger/client/src/message.cpp
+../include/message.h
+/home/neronsuper/Documents/vsc projects/Messanger/client/include/message.h
+sstream
+-
+
+/home/neronsuper/Documents/vsc projects/Messanger/client/src/privateUserData.cpp
+../include/privateUserData.h
+/home/neronsuper/Documents/vsc projects/Messanger/client/include/privateUserData.h
+
+/home/neronsuper/Documents/vsc projects/Messanger/client/src/userData.cpp
+../include/userData.h
+/home/neronsuper/Documents/vsc projects/Messanger/client/include/userData.h
+
