@@ -5,14 +5,13 @@
 
 CLIBaseApp::CLIBaseApp()
 {
-	_baseApp = nullptr;
-	
+	_baseApp = BaseApp::instance();
 }
 
 void CLIBaseApp::menu_CBA()
 {
 	std::system("clear");
-	std::cout << "User name: " << _userData.get()->getPrivateUserData()->getPData()->first << "\n";
+	std::cout << "User name: " << _userData->getLogin() << "\n";
     std::cout << "1. Send a massage\n";
     std::cout << "2. Look at a chat\n";
     std::cout << "0. Log out of your account\n";
@@ -20,8 +19,6 @@ void CLIBaseApp::menu_CBA()
 
 void CLIBaseApp::signIn()
 {
-	_baseApp = BaseApp::instance();
-
 	do
 	{
 		std::string login;
@@ -39,8 +36,6 @@ void CLIBaseApp::signIn()
 
 			break;
 		}
-
-
 	}
 	while (true);
 	
@@ -71,7 +66,6 @@ void CLIBaseApp::signIn()
 
 void CLIBaseApp::signUp()
 {
-	_baseApp = BaseApp::instance();
 
 	std::string login;
 	std::string password;

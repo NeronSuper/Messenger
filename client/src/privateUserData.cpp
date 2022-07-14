@@ -19,11 +19,11 @@ PrivateUserData::PrivateUserData(const std::string &name, const std::string &log
 	_name = name;
 }
 
-std::pair<std::string, std::string>* PrivateUserData::getPData()
+const std::pair<std::string, std::string>* PrivateUserData::getPData() const
 {
 	return &_pData;
 }
-std::string* PrivateUserData::getName()
+const std::string& PrivateUserData::getName() const
 {
-	return &_name;
+	return _name;
 }

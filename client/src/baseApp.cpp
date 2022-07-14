@@ -92,7 +92,7 @@ std::string BaseApp::lastLine(std::string path)
 void BaseApp::readFirstMesFromChats(UserData* userData)
 {
     std::string path = "/home/neronsuper/Documents/vsc projects/Messanger/Database/users/";
-    path.append(userData->getPrivateUserData()->getPData()->first).append("/chats/");
+    path.append(userData->getLogin()).append("/chats/");
  
 	
 	for (auto & p : fs::directory_iterator(path))
@@ -112,7 +112,7 @@ bool BaseApp::isUserExist(std::string& username)
 {
 	for (int i = 0; i < _userData.size(); ++i)
 	{
-		if (_userData[i].get()->getPrivateUserData()->getPData()->first == username)
+		if (_userData[i]->getLogin() == username)
 			return true;
 	}
 
@@ -123,8 +123,8 @@ bool BaseApp::isLoginAndPasswordCorrect(std::string& login, std::string& passwor
 {
 	for (int i = 0; i < _userData.size(); ++i)
 	{
-		if (_userData[i].get()->getPrivateUserData()->getPData()->first == login &&
-			_userData[i].get()->getPrivateUserData()->getPData()->second == password)
+		if (_userData[i]->getLogin() == login &&
+			_userData[i]->getPassword() == password)
 			return true;
 	}
 
@@ -137,15 +137,15 @@ void BaseApp::addUser(std::unique_ptr<UserData>& userData)
 	std::fstream myfile("/home/neronsuper/Documents/vsc projects/Messanger/Database/users.txt", std::ios::app);
 	if (myfile.is_open())
 	{
-		myfile << userData.get()->getPrivateUserData()->getPData()->first << " " << userData.get()->getPrivateUserData()->getPData()->second << "\n";
+		myfile << userData->getLogin() << " " << userData->getPassword() << "\n";
 	}
 	myfile.close();
 	
 
-	createDirectory("/home/neronsuper/Documents/vsc projects/Messanger/Database/users/", userData.get()->getPrivateUserData()->getPData()->first); //creating main directory
+	createDirectory("/home/neronsuper/Documents/vsc projects/Messanger/Database/users/", userData->getLogin()); //creating main directory
 	
 	std::string mainDirectory("/home/neronsuper/Documents/vsc projects/Messanger/Database/users/");
-	mainDirectory.append(userData.get()->getPrivateUserData()->getPData()->first).append("/");
+	mainDirectory.append(userData->getLogin()).append("/");
 
 	createDirectory(mainDirectory, "chats"); //creating chats
 
@@ -180,7 +180,7 @@ void BaseApp::sendMessage(const Message& message, const std::string& receiver)
 void BaseApp::readFullChat(UserData* userData, std::string chat)
 {
 	std::string currentUser = "/home/neronsuper/Documents/vsc projects/Messanger/Database/users/"; // opening file current user 
-    currentUser.append(userData->getPrivateUserData()->getPData()->first).append("/chats/").append(chat);
+    currentUser.append(userData->getLogin()).append("/chats/").append(chat);
 
     std::string tmp;
     std::ifstream in(currentUser); 

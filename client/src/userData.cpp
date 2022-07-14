@@ -37,6 +37,21 @@ void UserData::setName(const std::string& name)
 
 }
 
+const std::string& UserData::getLogin() const
+{
+	return _privateUserData.get()->getPData()->first;
+}
+
+const std::string& UserData::getPassword() const
+{
+	return _privateUserData.get()->getPData()->second;
+}
+
+const std::string& UserData::getName() const
+{
+	return _privateUserData.get()->getName();
+}
+
 const Message* UserData::setMessage()
 {
 	Message* m = new Message(); 

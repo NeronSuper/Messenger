@@ -10,8 +10,8 @@ public:
 	PrivateUserData(const std::string &login, const std::string &password);
 	PrivateUserData(const std::string& name, const std::string& login, const std::string& password);
 
-	std::pair<std::string, std::string>* getPData();
-	std::string* getName();
+	const std::pair<std::string, std::string>* getPData() const;
+	const std::string& getName() const;
 
 private:
 	std::pair<std::string, std::string> _pData; 

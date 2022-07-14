@@ -21,6 +21,9 @@ public:
 	void setMessageData(Message&& messageData);
 
 	PrivateUserData* getPrivateUserData();
+	const std::string& getLogin() const;
+	const std::string& getPassword() const;
+	const std::string& getName() const;
 	std::map <std::string, std::unique_ptr<Message>>& getMessages();
 
 private:

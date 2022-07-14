@@ -3,7 +3,7 @@
 CLImessage::CLImessage(UserData* _userData)
     : _userData(_userData)
 {
-    _baseApp = nullptr;
+    _baseApp = BaseApp::instance();
 }
 
 void CLImessage::help()
