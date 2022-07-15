@@ -35,7 +35,7 @@ void CLImessage::sendMessage()
     }
     while(1);
 
-    Message ms(_userData->getPrivateUserData()->getPData()->first, tmpMessage);
+    Message ms(_baseApp->getLogin(), tmpMessage);
     _baseApp->sendMessage(ms, receiver);
 
 }

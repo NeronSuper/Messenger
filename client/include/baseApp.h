@@ -34,6 +34,11 @@ public:
 	bool isUserExist(std::string& username);
 	bool isLoginAndPasswordCorrect(std::string&, std::string&);
 
+	void setUserData(UserData* userData);
+	const std::string& getLogin() const;
+	const std::string& getPassword() const;
+	const std::string& getName() const;
+
 	void createDirectory(std::string string_path, std::string directory_name);
 	std::string lastLine(std::string path);
 	
@@ -47,6 +52,7 @@ private:
 	BaseApp(const BaseApp&);
 	BaseApp& operator=(const BaseApp&);
 	static BaseApp* _instance;
-	std::vector <std::unique_ptr<UserData>> _userData = {};
+	std::vector <std::unique_ptr<UserData>> _usersData = {};
+	UserData* _userData;
 	
 };

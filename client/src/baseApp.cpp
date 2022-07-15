@@ -23,6 +23,26 @@ BaseApp& BaseApp::operator=(const BaseApp&)
 	return *this;
 }
 
+void BaseApp::setUserData(UserData* userData)
+{
+	this->_userData = userData;
+}
+
+const std::string& BaseApp::getLogin() const
+{
+	return _userData->getLogin();
+}
+
+const std::string& BaseApp::getPassword() const
+{
+	return _userData->getPassword();
+}
+
+const std::string& BaseApp::getName() const
+{
+	return _userData->getName();
+}
+
 void BaseApp::readUsersFromFile()
 {
 	std::ifstream myfile("/home/neronsuper/Documents/vsc projects/Messanger/Database/users.txt");
@@ -38,7 +58,7 @@ void BaseApp::readUsersFromFile()
 			if (myfile.eof()) 
 				break;
 
-			_userData.push_back(std::make_unique<UserData>(PrivateUserData(first_output, second_output)));
+			_usersData.push_back(std::make_unique<UserData>(PrivateUserData(first_output, second_output)));
 		}
 		
 	}
@@ -110,9 +130,9 @@ void BaseApp::readFirstMesFromChats(UserData* userData)
 
 bool BaseApp::isUserExist(std::string& username)
 {
-	for (int i = 0; i < _userData.size(); ++i)
+	for (int i = 0; i < _usersData.size(); ++i)
 	{
-		if (_userData[i]->getLogin() == username)
+		if (_usersData[i]->getLogin() == username)
 			return true;
 	}
 
@@ -121,10 +141,10 @@ bool BaseApp::isUserExist(std::string& username)
 
 bool BaseApp::isLoginAndPasswordCorrect(std::string& login, std::string& password)
 {
-	for (int i = 0; i < _userData.size(); ++i)
+	for (int i = 0; i < _usersData.size(); ++i)
 	{
-		if (_userData[i]->getLogin() == login &&
-			_userData[i]->getPassword() == password)
+		if (_usersData[i]->getLogin() == login &&
+			_usersData[i]->getPassword() == password)
 			return true;
 	}
 
@@ -149,7 +169,7 @@ void BaseApp::addUser(std::unique_ptr<UserData>& userData)
 
 	createDirectory(mainDirectory, "chats"); //creating chats
 
-	_userData.push_back(std::move(userData));
+	_usersData.push_back(std::move(userData));
 }
 
 void BaseApp::createDirectory(std::string string_path, std::string directory_name)

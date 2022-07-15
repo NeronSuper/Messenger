@@ -6,6 +6,7 @@
 CLIBaseApp::CLIBaseApp()
 {
 	_baseApp = BaseApp::instance();
+	_baseApp->setUserData(_userData.get());
 }
 
 void CLIBaseApp::menu_CBA()
