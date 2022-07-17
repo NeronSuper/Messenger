@@ -29,7 +29,7 @@ public:
 	void addUser(std::unique_ptr<UserData>& userData);
     UserData *authUser(UserData userData);
 
-	void sendMessage(const Message& message, const std::string& receiver);
+	void sendMessage(const std::string& sender, const std::string& receiver, const std::string& message);
 	bool isLoginAuth();
 	bool isUserExist(std::string& username);
 	bool isLoginAndPasswordCorrect(std::string&, std::string&);
@@ -39,12 +39,14 @@ public:
 	const std::string& getPassword() const;
 	const std::string& getName() const;
 
+	void printMessages(const std::string& chat);
+
 	void createDirectory(std::string string_path, std::string directory_name);
 	std::string lastLine(std::string path);
 	
 	void readUsersFromFile();
-	void readFirstMesFromChats(UserData* userData);
-	void readFullChat(UserData* userData, std::string chat);
+	//void readFirstMesFromChats(UserData* userData);
+	void readFullChat(std::string chat);
 
 	~BaseApp() = delete;
 private:

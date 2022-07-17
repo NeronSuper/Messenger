@@ -19,10 +19,16 @@ PrivateUserData::PrivateUserData(const std::string &name, const std::string &log
 	_name = name;
 }
 
-const std::pair<std::string, std::string>* PrivateUserData::getPData() const
+const std::string& PrivateUserData::getLogin() const
 {
-	return &_pData;
+	return _pData.first;
 }
+
+const std::string& PrivateUserData::getPassword() const
+{
+	return _pData.second;
+}
+
 const std::string& PrivateUserData::getName() const
 {
 	return _name;

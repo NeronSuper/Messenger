@@ -6,7 +6,6 @@
 CLIBaseApp::CLIBaseApp()
 {
 	_baseApp = BaseApp::instance();
-	_baseApp->setUserData(_userData.get());
 }
 
 void CLIBaseApp::menu_CBA()
@@ -34,13 +33,14 @@ void CLIBaseApp::signIn()
 		if (_baseApp->isLoginAndPasswordCorrect(login, password))
 		{
 			_userData = std::make_unique<UserData>(PrivateUserData(login, password));
+			_baseApp->setUserData(_userData.get());
 
 			break;
 		}
 	}
 	while (true);
 	
-	CLImessage cliMessage(_userData.get());
+	CLImessage cliMessage;
 	CLI* cli = &cliMessage;
 	
 	while(true)

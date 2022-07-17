@@ -43,6 +43,11 @@ const std::string& BaseApp::getName() const
 	return _userData->getName();
 }
 
+void BaseApp::printMessages(const std::string& chat)
+{
+	_userData->printMessages(chat);
+}
+
 void BaseApp::readUsersFromFile()
 {
 	std::ifstream myfile("/home/neronsuper/Documents/vsc projects/Messanger/Database/users.txt");
@@ -109,24 +114,24 @@ std::string BaseApp::lastLine(std::string path)
 	return lastline;
 }
 
-void BaseApp::readFirstMesFromChats(UserData* userData)
-{
-    std::string path = "/home/neronsuper/Documents/vsc projects/Messanger/Database/users/";
-    path.append(userData->getLogin()).append("/chats/");
+// void BaseApp::readFirstMesFromChats(UserData* userData)
+// {
+//     std::string path = "/home/neronsuper/Documents/vsc projects/Messanger/Database/users/";
+//     path.append(userData->getLogin()).append("/chats/");
  
 	
-	for (auto & p : fs::directory_iterator(path))
-	{
-		std::string currentUser = p.path().filename().generic_string();
-		std::string currentUserPath = p.path().generic_string();
+// 	for (auto & p : fs::directory_iterator(path))
+// 	{
+// 		std::string currentUser = p.path().filename().generic_string();
+// 		std::string currentUserPath = p.path().generic_string();
 		
-		if (userData->getMessages().count(currentUser)) // if element exists
-			userData->getMessages()[currentUser].get()->setMessage(lastLine(currentUserPath));
-		else
-			userData->getMessages()[currentUser] = std::make_unique<Message>(currentUser, lastLine(currentUserPath));
-	}
+// 		if (userData->getMessages().count(currentUser)) // if element exists
+// 			userData->getMessages()[currentUser].get()->setMessage(lastLine(currentUserPath));
+// 		else
+// 			userData->getMessages()[currentUser] = std::make_unique<Message>(currentUser, lastLine(currentUserPath));
+// 	}
 
-}
+// }
 
 bool BaseApp::isUserExist(std::string& username)
 {
@@ -178,41 +183,41 @@ void BaseApp::createDirectory(std::string string_path, std::string directory_nam
 	int status = mkdir(string_path.c_str(),0777);
 }
 
-void BaseApp::sendMessage(const Message& message, const std::string& receiver)
+void BaseApp::sendMessage(const std::string& sender, const std::string& receiver, const std::string& message)
 {
 	std::string currentUser = "/home/neronsuper/Documents/vsc projects/Messanger/Database/users/"; // opening file current user 
-    currentUser.append(message.getLogin()).append("/chats/").append(receiver);
+    currentUser.append(sender).append("/chats/").append(receiver);
 
     std::string recipientUser = "/home/neronsuper/Documents/vsc projects/Messanger/Database/users/"; // opening recipient file user
-    recipientUser.append(receiver).append("/chats/").append(message.getLogin());
+    recipientUser.append(receiver).append("/chats/").append(sender);
 
     std::fstream currentUserFile(currentUser, std::ios::app);
     std::fstream recipientUserFile(recipientUser, std::ios::app);
 	if (currentUserFile.is_open() && recipientUserFile.is_open())
 	{
-		currentUserFile << message.getLogin() << ": " << message.getMessage() << "\n";
-        recipientUserFile << message.getLogin() << ": " << message.getMessage() << "\n";
+		currentUserFile << sender << ": " << message << "\n";
+        recipientUserFile << sender << ": " << message << "\n";
 	}
 	currentUserFile.close();
     recipientUserFile.close();
 }
 
-void BaseApp::readFullChat(UserData* userData, std::string chat)
+void BaseApp::readFullChat(std::string chat)
 {
 	std::string currentUser = "/home/neronsuper/Documents/vsc projects/Messanger/Database/users/"; // opening file current user 
-    currentUser.append(userData->getLogin()).append("/chats/").append(chat);
+    currentUser.append(_userData->getLogin()).append("/chats/").append(chat);
 
     std::string tmp;
     std::ifstream in(currentUser); 
 
-	userData->getMessages()[chat].get()->getMessages() = {};
+	_userData->clearChat(chat);
 
     if (in.is_open())
     {
         std::system("clear");
         while (getline(in, tmp))
         {
-            userData->getMessages()[chat].get()->getMessages().push_back(tmp);
+            _userData->pushMessBack(chat, tmp);
         }
     }
     in.close(); 

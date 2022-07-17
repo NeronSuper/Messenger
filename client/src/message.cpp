@@ -6,7 +6,6 @@ Message::Message()
 	std::time_t t = std::time(0);   // get time now
 	_dt = std::localtime(&t);
 	_data = {};
-	_messages = {};
 }
 
 
@@ -15,12 +14,11 @@ Message::Message(const std::string& login, const std::string &message)
 {
 	std::time_t t = std::time(0);   // get time now
 	_dt = std::localtime(&t);
-	_messages = {};
 	
 }
 
 Message::Message(const Message& copy)
-	: _data(copy._data), _dt(copy._dt), _messages(copy._messages)
+	: _data(copy._data), _dt(copy._dt)
 {
 
 }
@@ -28,11 +26,6 @@ Message::Message(const Message& copy)
 const std::string& Message::getMessage() const
 {
 	return _data.second;
-}
-
-std::vector<std::string>& Message::getMessages()
-{
-	return _messages;
 }
 
 const std::string& Message::getLogin() const

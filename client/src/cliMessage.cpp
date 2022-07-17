@@ -1,7 +1,6 @@
 #include "../include/cliMessage.h"
 
-CLImessage::CLImessage(UserData* _userData)
-    : _userData(_userData)
+CLImessage::CLImessage()
 {
     _baseApp = BaseApp::instance();
 }
@@ -12,8 +11,6 @@ void CLImessage::help()
 
 void CLImessage::sendMessage()
 {
-    _baseApp = BaseApp::instance();
-
     std::system("clear");
 
     std::string receiver = "";
@@ -22,10 +19,13 @@ void CLImessage::sendMessage()
     {
         std::cout << "Message to: ";
         std::cin >> receiver;
+
         if (!_baseApp->isUserExist(receiver))
         {
+            std::cout << "This user doesn't exist\n";
             continue;
         }
+
         std::cout << "Your message to " << receiver << ": ";
         std::cin.clear();
         std::cin.ignore(255, '\n');
@@ -35,9 +35,7 @@ void CLImessage::sendMessage()
     }
     while(1);
 
-    Message ms(_baseApp->getLogin(), tmpMessage);
-    _baseApp->sendMessage(ms, receiver);
-
+    _baseApp->sendMessage(_baseApp->getLogin(), receiver, tmpMessage);
 }
 
 void CLImessage::showChat()
@@ -59,23 +57,14 @@ void CLImessage::showChat()
 
     std::string tmp;
     int userResponse;
-    std::string tmpLastline = "";
     do
     {
-        _baseApp->readFirstMesFromChats(_userData); // reading first messages from all chats
         
-        if (tmpLastline != _userData->getMessages()[chat].get()->getMessage()) // if message is new, reread it
-        {
-            _baseApp->readFullChat(_userData, chat);
-        }
+        _baseApp->readFullChat(chat);
+        
 
         std::system("clear");
-        for (int i = 0; i < _userData->getMessages()[chat].get()->getMessages().size(); i++) // print messages
-        {
-            std::cout << _userData->getMessages()[chat].get()->getMessages()[i] << "\n";
-        }
-
-        tmpLastline = _userData->getMessages()[chat].get()->getMessage(); // write oldest message
+        _baseApp->printMessages(chat);
         
 
         std::cout << "\n1. Update\n" <<

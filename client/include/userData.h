@@ -18,17 +18,21 @@ public:
 	void setPassword(const std::string& password);
 	void setName(const std::string& name);
 	const Message* setMessage();
-	void setMessageData(Message&& messageData);
+	void clearChat(std::string& chat);
+	void pushMessBack(std::string& login, std::string& message);
+
+	void printMessages(const std::string& chat);
 
 	PrivateUserData* getPrivateUserData();
 	const std::string& getLogin() const;
 	const std::string& getPassword() const;
 	const std::string& getName() const;
-	std::map <std::string, std::unique_ptr<Message>>& getMessages();
+	std::vector<Message>& getMessages(std::string& login);
+	int getMessagesSize(std::string& login);
 
 private:
 	std::unique_ptr<PrivateUserData> _privateUserData;
-	std::map <std::string, std::unique_ptr<Message>> _messages = {};
+	std::map <std::string, std::vector<Message>> _messages = {};
 	
 };
 

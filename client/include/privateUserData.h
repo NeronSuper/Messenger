@@ -10,14 +10,12 @@ public:
 	PrivateUserData(const std::string &login, const std::string &password);
 	PrivateUserData(const std::string& name, const std::string& login, const std::string& password);
 
-	const std::pair<std::string, std::string>* getPData() const;
+	const std::string& getLogin() const;
+	const std::string& getPassword() const;
 	const std::string& getName() const;
 
 private:
 	std::pair<std::string, std::string> _pData; 
 	std::string _name;
-	
-	
-
 };
 

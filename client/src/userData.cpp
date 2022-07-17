@@ -39,17 +39,47 @@ void UserData::setName(const std::string& name)
 
 const std::string& UserData::getLogin() const
 {
-	return _privateUserData->getPData()->first;
+	return _privateUserData->getLogin();
 }
 
 const std::string& UserData::getPassword() const
 {
-	return _privateUserData->getPData()->second;
+	return _privateUserData->getPassword();
 }
 
 const std::string& UserData::getName() const
 {
 	return _privateUserData->getName();
+}
+
+std::vector<Message>& UserData::getMessages(std::string& login)
+{
+	return _messages[login];
+}
+
+int UserData::getMessagesSize(std::string& login)
+{
+	return _messages[login].size();
+}
+
+void UserData::clearChat(std::string& chat)
+{
+	_messages[chat] = {};
+}
+
+void UserData::printMessages(const std::string& chat)
+{
+	auto messages = _messages[chat];
+	for (auto i = messages.begin(); i != messages.end(); ++i)
+	{
+		std::cout << i->getMessage() << "\n";
+	}
+	
+}
+
+void UserData::pushMessBack(std::string& login, std::string& message)
+{
+	_messages[login].push_back(Message(login, message));
 }
 
 const Message* UserData::setMessage()
@@ -58,20 +88,10 @@ const Message* UserData::setMessage()
 	return m;
 }
 
-void UserData::setMessageData(Message&& messageData)
-{
-	_messages[messageData.getLogin()] = std::make_unique<Message>(messageData);
-}
 
 PrivateUserData* UserData::getPrivateUserData()
 {
 	return _privateUserData.get();
 }
-
-std::map<std::string, std::unique_ptr<Message>>& UserData::getMessages()
-{
-	return _messages;
-}
-
 
 

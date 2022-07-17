@@ -11,7 +11,6 @@ public:
 	Message(const std::string&,	const std::string&);
 
 	const std::string& getMessage() const;
-	std::vector<std::string>& getMessages();
 	const std::string& getLogin() const;
 	const tm &getTime() const;
 
@@ -22,7 +21,6 @@ public:
 
 private:
 	std::pair<std::string, std::string> _data;
-	std::vector<std::string> _messages;
 	std::tm* _dt;
 };
 

@@ -5,15 +5,14 @@
 class CLImessage : public CLI
 {
 public:
-	CLImessage(UserData*);
+	CLImessage();
 
 	void sendMessage();
 	void showChat();
 	void help()override;
 
 private:
-	BaseApp* _baseApp;	
-	UserData* _userData;
+	BaseApp* _baseApp;
 
 };
 
