@@ -89,9 +89,4 @@ const Message* UserData::setMessage()
 }
 
 
-PrivateUserData* UserData::getPrivateUserData()
-{
-	return _privateUserData.get();
-}
-
 

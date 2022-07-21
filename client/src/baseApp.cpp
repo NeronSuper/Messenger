@@ -48,6 +48,26 @@ void BaseApp::printMessages(const std::string& chat)
 	_userData->printMessages(chat);
 }
 
+std::string BaseApp::getMyChatPath()
+{
+	std::string path = "/home/neronsuper/Documents/vsc projects/Messanger/Database/users/";
+	path.append(_userData->getLogin()).append("/chats/");
+
+	return path;
+}
+
+bool BaseApp::isContinue()
+{
+	std::string response;
+
+	std::cout << "\nDo you want to continue?(y/n): ";
+	std::cin >> response;
+
+	if ((response == "y" || response == "Y")) // if something except y, Y
+		return true;
+	return false;
+}
+
 void BaseApp::readUsersFromFile()
 {
 	std::ifstream myfile("/home/neronsuper/Documents/vsc projects/Messanger/Database/users.txt");
@@ -133,7 +153,7 @@ std::string BaseApp::lastLine(std::string path)
 
 // }
 
-bool BaseApp::isUserExist(std::string& username)
+bool BaseApp::isLoginExist(std::string& username)
 {
 	for (int i = 0; i < _usersData.size(); ++i)
 	{
@@ -144,7 +164,7 @@ bool BaseApp::isUserExist(std::string& username)
 	return false;
 }
 
-bool BaseApp::isLoginAndPasswordCorrect(std::string& login, std::string& password)
+bool BaseApp::isUserExist(std::string& login, std::string& password)
 {
 	for (int i = 0; i < _usersData.size(); ++i)
 	{
@@ -183,6 +203,16 @@ void BaseApp::createDirectory(std::string string_path, std::string directory_nam
 	int status = mkdir(string_path.c_str(),0777);
 }
 
+void BaseApp::setFolderNames(std::vector<std::string>& folderNames)
+{
+	std::string path = getMyChatPath();
+	folderNames = {};
+	for (auto & p : fs::directory_iterator(path))
+	{
+		folderNames.push_back(p.path().filename().generic_string());
+	}
+}
+
 void BaseApp::sendMessage(const std::string& sender, const std::string& receiver, const std::string& message)
 {
 	std::string currentUser = "/home/neronsuper/Documents/vsc projects/Messanger/Database/users/"; // opening file current user 
@@ -202,7 +232,7 @@ void BaseApp::sendMessage(const std::string& sender, const std::string& receiver
     recipientUserFile.close();
 }
 
-void BaseApp::readFullChat(std::string chat)
+void BaseApp::readFullChat(std::string& chat)
 {
 	std::string currentUser = "/home/neronsuper/Documents/vsc projects/Messanger/Database/users/"; // opening file current user 
     currentUser.append(_userData->getLogin()).append("/chats/").append(chat);

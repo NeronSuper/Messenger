@@ -23,7 +23,6 @@ public:
 
 	void printMessages(const std::string& chat);
 
-	PrivateUserData* getPrivateUserData();
 	const std::string& getLogin() const;
 	const std::string& getPassword() const;
 	const std::string& getName() const;

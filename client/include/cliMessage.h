@@ -7,8 +7,12 @@ class CLImessage : public CLI
 public:
 	CLImessage();
 
-	void sendMessage();
+	void sendMessage(std::string& receiver);
+	void startNewChat();
 	void showChat();
+
+	void listOfChats();
+	void openChat(std::string& chat);
 	void help()override;
 
 private:

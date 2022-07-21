@@ -12,8 +12,8 @@ void CLIBaseApp::menu_CBA()
 {
 	std::system("clear");
 	std::cout << "User name: " << _userData->getLogin() << "\n";
-    std::cout << "1. Send a massage\n";
-    std::cout << "2. Look at a chat\n";
+    std::cout << "1. List of Chats\n";
+	std::cout << "2. Start a new chat\n";
     std::cout << "0. Log out of your account\n";
 }
 
@@ -21,8 +21,7 @@ void CLIBaseApp::signIn()
 {
 	do
 	{
-		std::string login;
-		std::string password;
+		std::string login, password, response;
 
 		std::system("clear");
 		std::cout << "Your login: ";
@@ -30,13 +29,20 @@ void CLIBaseApp::signIn()
 		std::cout << "Your password: ";
 		std::cin >> password;
 
-		if (_baseApp->isLoginAndPasswordCorrect(login, password))
+		if (_baseApp->isUserExist(login, password))
 		{
 			_userData = std::make_unique<UserData>(PrivateUserData(login, password));
 			_baseApp->setUserData(_userData.get());
 
 			break;
 		}
+
+		std::cout << "Incorrect login or password\n";
+
+		if (_baseApp->isContinue())
+            continue;
+            
+        return;
 	}
 	while (true);
 	
@@ -53,10 +59,10 @@ void CLIBaseApp::signIn()
 		switch (requestToUser)
 		{
 		case 1:
-			cliMessage.sendMessage();
+			cliMessage.listOfChats();
 			break;
 		case 2:
-			cliMessage.showChat();
+			cliMessage.startNewChat();
 			break;
 		case 0:
 			_userData = {};
@@ -77,8 +83,15 @@ void CLIBaseApp::signUp()
 		std::cin >> login;
 
 		
-		if (_baseApp->isUserExist(login))
-			continue;
+		if (_baseApp->isLoginExist(login))
+		{
+			std::cout << "This user already exists\n";
+			
+			if (_baseApp->isContinue())
+                continue;
+            
+            return;
+		}
 		
 
 		std::cout << "Password: ";
