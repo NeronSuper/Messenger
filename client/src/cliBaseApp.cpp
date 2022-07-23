@@ -53,20 +53,22 @@ void CLIBaseApp::signIn()
 	{
 		menu_CBA();
 
-		int requestToUser;
+		char requestToUser;
 		std::cin >> requestToUser;
 
 		switch (requestToUser)
 		{
-		case 1:
+		case '1':
 			cliMessage.listOfChats();
 			break;
-		case 2:
+		case '2':
 			cliMessage.startNewChat();
 			break;
-		case 0:
+		case '0':
 			_userData = {};
 			return;
+		default:
+			break;
 		}
 	}	
 }

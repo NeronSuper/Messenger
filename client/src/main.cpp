@@ -17,6 +17,8 @@ void mainMenu()
 auto main()->int
 {
 	
+	
+	
 
 #if 1
 	//singelton

@@ -97,7 +97,7 @@ void CLImessage::openChat(std::string& chat)
 
 void CLImessage::listOfChats()
 {
-    int tmp;
+    int response;
     std::vector<std::string> folderNames = {};
     do
     {
@@ -119,12 +119,14 @@ void CLImessage::listOfChats()
 
         
         std::cout << "\nSelect chat or type \"0\" to return: ";
-        std::cin >> tmp;
+        std::cin.clear();
+        std::cin.ignore(32767, '\n');
+        std::cin >> response;
 
-        if (tmp == 0)
+        if (response == 0)
             return;
 
-        if (!(tmp > 0 && tmp <= folderNames.size()))
+        if (!(response > 0 && response <= folderNames.size()))
         {
             std::cout << "Incorrect input\n";
 
@@ -134,7 +136,7 @@ void CLImessage::listOfChats()
             return;
         }
 
-        openChat(folderNames[tmp - 1]);
+        openChat(folderNames[response - 1]);
 
         break;
     } 

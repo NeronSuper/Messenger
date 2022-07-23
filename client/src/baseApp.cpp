@@ -103,65 +103,6 @@ void BaseApp::readUsersFromFile()
 	myfile.close();
 }
 
-std::string BaseApp::lastLine(std::string path)
-{
-	std::string lastline = " ";
-	
-	const std::string filename = path;
-	std::ifstream fs;
-	fs.open(filename.c_str(), std::fstream::in);
-	if(fs.is_open())
-	{
-		//Got to the last character before EOF
-		fs.seekg(-1, std::ios_base::end);
-		if(fs.peek() == '\n')
-		{
-			//Start searching for \n occurrences
-			fs.seekg(-1, std::ios_base::cur);
-			int i = fs.tellg();
-			for(i; i > 0; --i)
-			{
-				if(fs.peek() == '\n')
-				{
-					//Found
-					fs.get();
-					break;
-				}
-				//Move one character back
-				fs.seekg(i, std::ios_base::beg);
-			}
-		}
-		
-		getline(fs, lastline);
-
-	}
-	else
-	{
-		std::cout << "Could not open file\n";
-	}
-	
-	return lastline;
-}
-
-// void BaseApp::readFirstMesFromChats(UserData* userData)
-// {
-//     std::string path = "/home/neronsuper/Documents/vsc projects/Messanger/Database/users/";
-//     path.append(userData->getLogin()).append("/chats/");
- 
-	
-// 	for (auto & p : fs::directory_iterator(path))
-// 	{
-// 		std::string currentUser = p.path().filename().generic_string();
-// 		std::string currentUserPath = p.path().generic_string();
-		
-// 		if (userData->getMessages().count(currentUser)) // if element exists
-// 			userData->getMessages()[currentUser].get()->setMessage(lastLine(currentUserPath));
-// 		else
-// 			userData->getMessages()[currentUser] = std::make_unique<Message>(currentUser, lastLine(currentUserPath));
-// 	}
-
-// }
-
 bool BaseApp::isLoginExist(std::string& username)
 {
 	for (int i = 0; i < _usersData.size(); ++i)
@@ -196,19 +137,16 @@ void BaseApp::addUser(std::unique_ptr<UserData>& userData)
 	myfile.close();
 	
 
-	createDirectory("../../../Database/users/", userData->getLogin()); //creating main directory
-	
-	std::string mainDirectory = getNessesaryPath(std::vector<std::string>{ "../../../Database/users/", userData->getLogin(), "/"});
-
-	createDirectory(mainDirectory, "chats"); //creating chats
+	createDirectory("../../../Database/users/", userData->getLogin()); //creating user's directory
+	createDirectory(getNessesaryPath(std::vector<std::string>{"../../../Database/users/", userData->getLogin(), "/"}), "chats"); //creating chats
 
 	_usersData.push_back(std::move(userData));
 }
 
-void BaseApp::createDirectory(std::string string_path, std::string directory_name)
+void BaseApp::createDirectory(std::string&& straight_path, std::string directory_name)
 {
-	string_path.append(directory_name);
-	int status = mkdir(string_path.c_str(),0777);
+	straight_path.append(directory_name);
+	int status = mkdir(straight_path.c_str(),0777);
 }
 
 void BaseApp::setFolderNames(std::vector<std::string>& folderNames)
@@ -239,14 +177,12 @@ void BaseApp::sendMessage(const std::string& sender, const std::string& receiver
 
 void BaseApp::readFullChat(std::string& chat)
 {
-	std::string currentUser = getNessesaryPath(std::vector<std::string>{"../../../Database/users/", _userData->getLogin(), "/chats/", chat});
-
-	
-    std::string tmp;
-    std::ifstream in(currentUser); 
-
 	_userData->clearChat(chat);
 
+
+	std::ifstream in(getNessesaryPath(std::vector<std::string>{"../../../Database/users/", _userData->getLogin(), "/chats/", chat})); 
+
+    std::string tmp;
     if (in.is_open())
     {
         std::system("clear");

@@ -27,7 +27,6 @@ public:
 	
 
 	void addUser(std::unique_ptr<UserData>& userData);
-    UserData *authUser(UserData userData);
 
 	void sendMessage(const std::string& sender, const std::string& receiver, const std::string& message);
 	bool isLoginAuth();
@@ -46,11 +45,9 @@ public:
 	void printMessages(const std::string& chat);
 	bool isContinue();
 
-	void createDirectory(std::string string_path, std::string directory_name);
-	std::string lastLine(std::string path);
+	void createDirectory(std::string&& straight_path, std::string directory_name);
 	
 	void readUsersFromFile();
-	//void readFirstMesFromChats(UserData* userData);
 	void readFullChat(std::string& chat);
 
 	~BaseApp() = delete;
