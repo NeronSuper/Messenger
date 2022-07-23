@@ -48,12 +48,20 @@ void BaseApp::printMessages(const std::string& chat)
 	_userData->printMessages(chat);
 }
 
+std::string BaseApp::getNessesaryPath(std::vector<std::string>&& ways)
+{
+	std::string tmp;
+	for (auto i = ways.begin(); i != ways.end(); ++i)
+	{
+		tmp.append(*i);
+	}
+	
+	return tmp;
+}
+
 std::string BaseApp::getMyChatPath()
 {
-	std::string path = "/home/neronsuper/Documents/vsc projects/Messanger/Database/users/";
-	path.append(_userData->getLogin()).append("/chats/");
-
-	return path;
+	return getNessesaryPath(std::vector<std::string>{"../../../Database/users/", _userData->getLogin(), "/chats/"});
 }
 
 bool BaseApp::isContinue()
@@ -70,7 +78,7 @@ bool BaseApp::isContinue()
 
 void BaseApp::readUsersFromFile()
 {
-	std::ifstream myfile("/home/neronsuper/Documents/vsc projects/Messanger/Database/users.txt");
+	std::ifstream myfile("../../../Database/users.txt");
 	std::string first_output;
 	std::string second_output;
 	
@@ -90,6 +98,7 @@ void BaseApp::readUsersFromFile()
 	else
 	{
 		std::cout << "File can't be openned\n";
+		std::exit(1);
 	}
 	myfile.close();
 }
@@ -179,7 +188,7 @@ bool BaseApp::isUserExist(std::string& login, std::string& password)
 void BaseApp::addUser(std::unique_ptr<UserData>& userData)
 {
 	
-	std::fstream myfile("/home/neronsuper/Documents/vsc projects/Messanger/Database/users.txt", std::ios::app);
+	std::fstream myfile("../../../Database/users.txt", std::ios::app);
 	if (myfile.is_open())
 	{
 		myfile << userData->getLogin() << " " << userData->getPassword() << "\n";
@@ -187,10 +196,9 @@ void BaseApp::addUser(std::unique_ptr<UserData>& userData)
 	myfile.close();
 	
 
-	createDirectory("/home/neronsuper/Documents/vsc projects/Messanger/Database/users/", userData->getLogin()); //creating main directory
+	createDirectory("../../../Database/users/", userData->getLogin()); //creating main directory
 	
-	std::string mainDirectory("/home/neronsuper/Documents/vsc projects/Messanger/Database/users/");
-	mainDirectory.append(userData->getLogin()).append("/");
+	std::string mainDirectory = getNessesaryPath(std::vector<std::string>{ "../../../Database/users/", userData->getLogin(), "/"});
 
 	createDirectory(mainDirectory, "chats"); //creating chats
 
@@ -215,11 +223,8 @@ void BaseApp::setFolderNames(std::vector<std::string>& folderNames)
 
 void BaseApp::sendMessage(const std::string& sender, const std::string& receiver, const std::string& message)
 {
-	std::string currentUser = "/home/neronsuper/Documents/vsc projects/Messanger/Database/users/"; // opening file current user 
-    currentUser.append(sender).append("/chats/").append(receiver);
-
-    std::string recipientUser = "/home/neronsuper/Documents/vsc projects/Messanger/Database/users/"; // opening recipient file user
-    recipientUser.append(receiver).append("/chats/").append(sender);
+	std::string currentUser = getNessesaryPath(std::vector<std::string>{ "../../../Database/users/", sender, "/chats/", receiver}); // opening file current user 
+    std::string recipientUser = getNessesaryPath(std::vector<std::string>{ "../../../Database/users/", receiver, "/chats/", sender}); // opening recipient file user
 
     std::fstream currentUserFile(currentUser, std::ios::app);
     std::fstream recipientUserFile(recipientUser, std::ios::app);
@@ -234,9 +239,9 @@ void BaseApp::sendMessage(const std::string& sender, const std::string& receiver
 
 void BaseApp::readFullChat(std::string& chat)
 {
-	std::string currentUser = "/home/neronsuper/Documents/vsc projects/Messanger/Database/users/"; // opening file current user 
-    currentUser.append(_userData->getLogin()).append("/chats/").append(chat);
+	std::string currentUser = getNessesaryPath(std::vector<std::string>{"../../../Database/users/", _userData->getLogin(), "/chats/", chat});
 
+	
     std::string tmp;
     std::ifstream in(currentUser); 
 

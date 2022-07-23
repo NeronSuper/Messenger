@@ -5,9 +5,6 @@
 
 
 
-
-
-
 void mainMenu()
 {
 	std::system("clear");
@@ -19,6 +16,9 @@ void mainMenu()
 
 auto main()->int
 {
+	
+
+#if 1
 	//singelton
 	BaseApp *baseApp = BaseApp::instance();
 	//read private data from file
@@ -54,6 +54,6 @@ auto main()->int
 			break;
 		}
 	}
-
+#endif
 	return 0;
 }

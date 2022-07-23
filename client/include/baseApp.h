@@ -41,6 +41,7 @@ public:
 	const std::string& getPassword() const;
 	const std::string& getName() const;
 	std::string getMyChatPath();
+	std::string getNessesaryPath(std::vector<std::string>&& ways);
 
 	void printMessages(const std::string& chat);
 	bool isContinue();

@@ -9,7 +9,6 @@ public:
 
 	void sendMessage(std::string& receiver);
 	void startNewChat();
-	void showChat();
 
 	void listOfChats();
 	void openChat(std::string& chat);

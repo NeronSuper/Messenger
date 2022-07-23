@@ -63,54 +63,6 @@ void CLImessage::startNewChat()
     while(1);
 }
 
-
-void CLImessage::showChat()
-{
-    
-    std::string chat;
-    do
-    {
-        std::system("clear");
-
-        std::cout << "Enter currect chat which you wanna see: ";
-        std::cin >> chat;
-
-        // here have to be check if it exists
-
-        break;
-    } 
-    while (1);
-
-    std::string tmp;
-    int userResponse;
-    do
-    {
-        
-        _baseApp->readFullChat(chat);
-        
-
-        std::system("clear");
-        _baseApp->printMessages(chat);
-        
-
-        std::cout << "\n1. Update\n" <<
-                       "2. Close the chat\n";
-        
-        std::cin >> userResponse;
-
-        switch (userResponse)
-        {
-        case 1:
-            break;
-        case 2:
-            return;
-        default:
-            break;
-        }
-    }
-    while (1);
-}
-
 void CLImessage::openChat(std::string& chat)
 {
     do 
@@ -170,7 +122,17 @@ void CLImessage::listOfChats()
         std::cin >> tmp;
 
         if (tmp == 0)
-            break;
+            return;
+
+        if (!(tmp > 0 && tmp <= folderNames.size()))
+        {
+            std::cout << "Incorrect input\n";
+
+            if (_baseApp->isContinue())
+                continue;
+            
+            return;
+        }
 
         openChat(folderNames[tmp - 1]);
 
