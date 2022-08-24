@@ -14,22 +14,23 @@
 
 
 
-
-
 class BaseApp
 {
 public:
 	static BaseApp* instance();
-	
-	
 private:
+	static BaseApp* _instance;
+
 	BaseApp();
 	~BaseApp() = delete;
 	BaseApp(const BaseApp&);
 	BaseApp& operator=(const BaseApp&);
 	
-	static BaseApp* _instance;
+public:
 
-	//std::vector <std::unique_ptr<UserData>> _usersData = {};
-	//UserData* _userData;
+	void start();
+
+private:
+	std::vector <std::unique_ptr<UserData>> _Users;
+	UserData* _current;
 };

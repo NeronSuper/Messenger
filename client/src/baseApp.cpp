@@ -13,5 +13,13 @@ BaseApp* BaseApp::instance()
 	return _instance;
 }
 
-BaseApp::BaseApp() { }
+BaseApp::BaseApp() 
+{
+	_current = new UserData;
+}
+
+void start()
+{
+
+}
 
