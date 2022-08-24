@@ -13,6 +13,8 @@ public:
 	UserData();
 	UserData(const std::string& login, const std::string& password);
 	
+	const std::string& getLogin() const;
+	const std::string& getPassword() const;
 
 private:
 
