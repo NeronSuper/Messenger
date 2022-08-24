@@ -29,6 +29,8 @@ private:
 public:
 
 	void start();
+	void signIn();
+	void signUp();
 
 private:
 	std::vector <std::unique_ptr<UserData>> _Users;
