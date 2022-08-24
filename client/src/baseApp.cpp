@@ -58,5 +58,54 @@ void BaseApp::signIn()
 
 void BaseApp::signUp()
 {
+	std::string login;
+	std::string password;
 	
+	while(true)
+	{
+		std::system("cls");
+		std::cout << "Login: ";
+		std::cin >> login;
+
+		std::cout << "Password: ";
+		std::cin >> password;
+
+		if (isUser(login, "")) // if user exists
+			continue;
+
+
+		break;
+	}
+
+	addUser(UserData(login, password));
+}
+
+
+void BaseApp::addUser(const UserData& user)
+{
+	_Users.push_back(std::make_unique<UserData>(user));
+}
+
+
+bool BaseApp::isUser(const std::string& login, const std::string& password)
+{
+	if (password == "")
+	{
+		for (int i = 0; i < _Users.size(); ++i)
+		{
+			if (_Users[i]->getLogin() == login)
+				return true;
+		}
+		
+	}
+	else
+	{
+		for (int i = 0; i < _Users.size(); ++i)
+		{
+			if (_Users[i]->getLogin() == login && _Users[i]->getPassword() == password)
+				return true;
+		}
+	}
+
+	return false;
 }

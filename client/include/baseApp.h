@@ -32,6 +32,11 @@ public:
 	void signIn();
 	void signUp();
 
+public:
+
+	void addUser(const UserData&);
+	bool isUser(const std::string& login, const std::string& password);
+
 private:
 	std::vector <std::unique_ptr<UserData>> _Users;
 	UserData* _current;
