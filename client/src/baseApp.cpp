@@ -13,9 +13,8 @@ BaseApp* BaseApp::instance()
 	return _instance;
 }
 
-BaseApp::BaseApp() 
-{
-}
+BaseApp::BaseApp() {}
+
 
 void BaseApp::start()
 {
@@ -64,7 +63,7 @@ void BaseApp::signIn()
 		std::cout << "Password: ";
 		std::cin >> password;
 
-		if (!isUser(login, password))
+		if (!isPassword(login, password))
 			continue;
 
 
@@ -72,7 +71,7 @@ void BaseApp::signIn()
 	}
 	while(true);
 
-	inAccount(UserData(login, password));
+	inAccount(findUser(login));
 }
 
 void BaseApp::signUp()
@@ -89,7 +88,7 @@ void BaseApp::signUp()
 		std::cout << "Password: ";
 		std::cin >> password;
 
-		if (isUser(login, "")) // if user exists
+		if (isUser(login)) // if user exists
 			continue;
 
 
@@ -100,45 +99,39 @@ void BaseApp::signUp()
 	addUser(UserData(login, password));
 }
 
-void BaseApp::inAccount(const UserData& user)
+void BaseApp::inAccount(UserData* user)
 {
-	void (*print_menu)() = []()
+	_current = user;
+
+	while(true)
 	{
 		std::system("cls");
+		std::cout << "Account name: " << _current->getLogin() << '\n';
 		std::cout << "1. Send a message\n";
 		std::cout << "2. Look at a chat\n";
 		std::cout << "3. Return\n";
 		std::cout << "4. Exit\n";
-	};
 
-	_current = new UserData(user);
-
-	while(true)
-	{
-		print_menu();
 		
-		int response;
+		char response;
 		std::cin >> response;
 
 		switch(response)
 		{
-			case 1:
+			case '1':
 				sendMessage();
 				break;
-			case 2:
-				
+			case '2':
+				lookAtChat();
 				break;
-			case 3:
+			case '3':
 				return;
-			case 4:
-				
+			case '4':
+				// need throw
 			default:
 				break;
 		}
 	}
-
-
-	delete _current;
 }
 
 
@@ -158,9 +151,11 @@ void BaseApp::sendMessage()
 		std::cin >> receiver;
 
 		std::cout << "Message: ";
-		std::cin >> message;
+		std::cin.clear();
+        std::cin.ignore(255, '\n');
+        std::getline(std::cin, message);
 
-		if (!isUser(receiver, ""))
+		if (!isUser(receiver))
 			continue;
 
 		
@@ -171,43 +166,73 @@ void BaseApp::sendMessage()
 
 	Message tmpMessage(_current->getLogin(), message);
 
-
-	_current->addMessage(tmpMessage);
-
-	for(int i = 0; i < _Users.size(); ++i)
-	{
-		if (_Users[i]->getLogin() == receiver)
-		{
-			_Users[i]->addMessage(tmpMessage);
-			break;	
-		}
-	}
+	findUser(_current->getLogin())->addMessage(receiver, tmpMessage);
+	findUser(receiver)->addMessage(_current->getLogin(), tmpMessage);
 }
 
 void BaseApp::lookAtChat()
 {
-	
+	std::string chat;
+	do
+	{
+		std::system("cls");
+		std::cout << "Chat: ";
+		std::cin >> chat;
+
+		if (!isUser(chat))
+			continue;
+
+		break;
+	}
+	while(true);
+
+	printMessages(chat);
 }
 
-bool BaseApp::isUser(const std::string& login, const std::string& password)
+void BaseApp::printMessages(const std::string& chat)
 {
-	if (password == "")
+	auto messages = _current->getMessages(chat);
+
+	std::system("cls");
+	std::cout << "Your chat with " << chat << '\n';
+	for(int i = 0; i < messages.size(); ++i)
 	{
-		for (int i = 0; i < _Users.size(); ++i)
-		{
-			if (_Users[i]->getLogin() == login)
-				return true;
-		}
-		
+		std::cout << messages[i].getOwner() << ": " << messages[i].getMess() << '\n';
 	}
-	else
+
+	std::string tmp;
+	std::cin >> tmp; // just for wait
+}
+
+bool BaseApp::isUser(const std::string& login)
+{
+	for (int i = 0; i < _Users.size(); ++i)
 	{
-		for (int i = 0; i < _Users.size(); ++i)
-		{
-			if (_Users[i]->getLogin() == login && _Users[i]->getPassword() == password)
-				return true;
-		}
+		if (_Users[i]->getLogin() == login)
+			return true;
 	}
 
 	return false;
+}
+
+bool BaseApp::isPassword(const std::string& login, const std::string& password)
+{
+	for (int i = 0; i < _Users.size(); ++i)
+	{
+		if (_Users[i]->getLogin() == login && _Users[i]->getPassword() == password)
+			return true;
+	}
+
+	return false;
+}
+
+UserData* BaseApp::findUser(const std::string& login)
+{
+	for (int i = 0; i < _Users.size(); ++i)
+	{
+		if (_Users[i]->getLogin() == login)
+			return _Users[i].get();
+	}
+
+	return nullptr;
 }

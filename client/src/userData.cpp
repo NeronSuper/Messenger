@@ -30,6 +30,11 @@ const std::string& UserData::getPassword() const
 	return _privateUserData.getPassword();
 }
 
+const std::vector<Message>& UserData::getMessages(std::string login) 
+{
+	return _messages[login];
+}
+
 void UserData::setLogin(const std::string& login)
 {
 
@@ -40,7 +45,7 @@ void UserData::setPassword(const std::string& password)
 	
 }
 
-void UserData::addMessage(const Message& mes)
+void UserData::addMessage(const std::string& receiver, const Message& mes)
 {
-	_messages[mes.getOwner()].push_back(mes);
+	_messages[receiver].push_back(mes);
 }

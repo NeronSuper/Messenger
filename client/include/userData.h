@@ -16,13 +16,14 @@ public:
 	
 	const std::string& getLogin() const;
 	const std::string& getPassword() const;
+	const std::vector<Message>& getMessages(std::string login);
 
 	void setLogin(const std::string& login);
 	void setPassword(const std::string& password);
 
 
 
-	void addMessage(const Message& mes);
+	void addMessage(const std::string& receiver, const Message& mes);
 
 private:
 

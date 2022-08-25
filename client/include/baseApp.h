@@ -31,15 +31,17 @@ public:
 	void start();
 	void signIn();
 	void signUp();
+	void inAccount(UserData* user);
 
-	void inAccount(const UserData& user);
-
+	void sendMessage();
+	void lookAtChat();
+	void printMessages(const std::string& chat);
 public:
 
 	void addUser(const UserData& user);
-	void sendMessage();
-	void lookAtChat();
-	bool isUser(const std::string& login, const std::string& password);
+	bool isUser(const std::string& login);
+	bool isPassword(const std::string& login, const std::string& password);
+	UserData* findUser(const std::string& login);
 
 private:
 	std::vector <std::unique_ptr<UserData>> _Users;
