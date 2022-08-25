@@ -53,7 +53,26 @@ void BaseApp::start()
 
 void BaseApp::signIn()
 {
+	std::string login;
+	std::string password;
+	
+	do
+	{
+		std::system("cls");
+		std::cout << "Login: ";
+		std::cin >> login;
 
+		std::cout << "Password: ";
+		std::cin >> password;
+
+		if (isUser(login, password))
+			continue;
+
+
+	}
+	while(false);
+
+	inAccount(UserData(login, password));
 }
 
 void BaseApp::signUp()
@@ -61,7 +80,7 @@ void BaseApp::signUp()
 	std::string login;
 	std::string password;
 	
-	while(true)
+	do
 	{
 		std::system("cls");
 		std::cout << "Login: ";
@@ -74,10 +93,15 @@ void BaseApp::signUp()
 			continue;
 
 
-		break;
 	}
-
+	while(false);
+	
 	addUser(UserData(login, password));
+}
+
+void BaseApp::inAccount(const UserData& user)
+{
+	
 }
 
 

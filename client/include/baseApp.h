@@ -32,9 +32,11 @@ public:
 	void signIn();
 	void signUp();
 
+	void inAccount(const UserData& user);
+
 public:
 
-	void addUser(const UserData&);
+	void addUser(const UserData& user);
 	bool isUser(const std::string& login, const std::string& password);
 
 private:
