@@ -20,6 +20,10 @@ public:
 	void setLogin(const std::string& login);
 	void setPassword(const std::string& password);
 
+
+
+	void addMessage(const Message& mes);
+
 private:
 
 	PrivateUserData _privateUserData;

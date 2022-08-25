@@ -123,7 +123,7 @@ void BaseApp::inAccount(const UserData& user)
 		switch(response)
 		{
 			case 1:
-				
+				sendMessage();
 				break;
 			case 2:
 				
@@ -147,9 +147,46 @@ void BaseApp::addUser(const UserData& user)
 	_Users.push_back(std::make_unique<UserData>(user));
 }
 
-void BaseApp::sendMessage(const std::string& receiver, const Message& mes)
+void BaseApp::sendMessage()
 {
+	std::string receiver;
+	std::string message;
+	do
+	{	
+		std::system("cls");
+		std::cout << "Receiver: ";
+		std::cin >> receiver;
 
+		std::cout << "Message: ";
+		std::cin >> message;
+
+		if (!isUser(receiver, ""))
+			continue;
+
+		
+		break;
+	}
+	while(true);
+
+
+	Message tmpMessage(_current->getLogin(), message);
+
+
+	_current->addMessage(tmpMessage);
+
+	for(int i = 0; i < _Users.size(); ++i)
+	{
+		if (_Users[i]->getLogin() == receiver)
+		{
+			_Users[i]->addMessage(tmpMessage);
+			break;	
+		}
+	}
+}
+
+void BaseApp::lookAtChat()
+{
+	
 }
 
 bool BaseApp::isUser(const std::string& login, const std::string& password)

@@ -39,3 +39,8 @@ void UserData::setPassword(const std::string& password)
 {
 	
 }
+
+void UserData::addMessage(const Message& mes)
+{
+	_messages[mes.getOwner()].push_back(mes);
+}

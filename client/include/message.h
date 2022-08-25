@@ -9,7 +9,8 @@ public:
 	Message(const Message& copy);
 	Message(const std::string&,	const std::string&);
 
-	
+	const std::string& getOwner() const;
+	const std::string& getMess() const;
 
 
 private:

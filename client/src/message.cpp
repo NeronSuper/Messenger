@@ -16,3 +16,12 @@ Message::Message(const Message& copy)
 {
 }
 
+const std::string& Message::getOwner() const
+{
+	return _data.first;
+}
+
+const std::string& Message::getMess() const
+{
+	return _data.second;
+}
