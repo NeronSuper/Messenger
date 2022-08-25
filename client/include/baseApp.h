@@ -37,6 +37,7 @@ public:
 public:
 
 	void addUser(const UserData& user);
+	void sendMessage(const std::string& receiver, const Message& mes);
 	bool isUser(const std::string& login, const std::string& password);
 
 private:

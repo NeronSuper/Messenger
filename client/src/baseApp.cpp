@@ -15,7 +15,6 @@ BaseApp* BaseApp::instance()
 
 BaseApp::BaseApp() 
 {
-	_current = new UserData;
 }
 
 void BaseApp::start()
@@ -65,12 +64,13 @@ void BaseApp::signIn()
 		std::cout << "Password: ";
 		std::cin >> password;
 
-		if (isUser(login, password))
+		if (!isUser(login, password))
 			continue;
 
 
+		break;
 	}
-	while(false);
+	while(true);
 
 	inAccount(UserData(login, password));
 }
@@ -93,15 +93,52 @@ void BaseApp::signUp()
 			continue;
 
 
+		break;
 	}
-	while(false);
+	while(true);
 	
 	addUser(UserData(login, password));
 }
 
 void BaseApp::inAccount(const UserData& user)
 {
-	
+	void (*print_menu)() = []()
+	{
+		std::system("cls");
+		std::cout << "1. Send a message\n";
+		std::cout << "2. Look at a chat\n";
+		std::cout << "3. Return\n";
+		std::cout << "4. Exit\n";
+	};
+
+	_current = new UserData(user);
+
+	while(true)
+	{
+		print_menu();
+		
+		int response;
+		std::cin >> response;
+
+		switch(response)
+		{
+			case 1:
+				
+				break;
+			case 2:
+				
+				break;
+			case 3:
+				return;
+			case 4:
+				
+			default:
+				break;
+		}
+	}
+
+
+	delete _current;
 }
 
 
@@ -110,6 +147,10 @@ void BaseApp::addUser(const UserData& user)
 	_Users.push_back(std::make_unique<UserData>(user));
 }
 
+void BaseApp::sendMessage(const std::string& receiver, const Message& mes)
+{
+
+}
 
 bool BaseApp::isUser(const std::string& login, const std::string& password)
 {

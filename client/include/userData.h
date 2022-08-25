@@ -12,9 +12,13 @@ class UserData
 public:
 	UserData();
 	UserData(const std::string& login, const std::string& password);
+	UserData& operator=(const UserData&);
 	
 	const std::string& getLogin() const;
 	const std::string& getPassword() const;
+
+	void setLogin(const std::string& login);
+	void setPassword(const std::string& password);
 
 private:
 
