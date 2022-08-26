@@ -13,37 +13,39 @@
 #include "../src/userData.cpp"
 
 
-
-class BaseApp
+namespace Messanger
 {
-public:
-	static BaseApp* instance();
-private:
-	static BaseApp* _instance;
+	class BaseApp
+	{
+	public:
+		static BaseApp* instance();
+	private:
+		static BaseApp* _instance;
 
-	BaseApp();
-	~BaseApp() = delete;
-	BaseApp(const BaseApp&);
-	BaseApp& operator=(const BaseApp&);
-	
-public:
+		BaseApp();
+		~BaseApp() = delete;
+		BaseApp(const BaseApp&);
+		BaseApp& operator=(const BaseApp&);
+		
+	public:
 
-	void start();
-	void signIn();
-	void signUp();
-	void inAccount(UserData* user);
+		void start();
+		void signIn();
+		void signUp();
+		void inAccount(UserData* user);
 
-	void sendMessage();
-	void lookAtChat();
-	void printMessages(const std::string& chat);
-public:
+		void sendMessage();
+		void lookAtChat();
+		void printMessages(const std::string& chat);
+	public:
 
-	void addUser(const UserData& user);
-	bool isUser(const std::string& login);
-	bool isPassword(const std::string& login, const std::string& password);
-	UserData* findUser(const std::string& login);
+		void addUser(const UserData& user);
+		bool isUser(const std::string& login);
+		bool isPassword(const std::string& login, const std::string& password);
+		UserData* findUser(const std::string& login);
 
-private:
-	std::vector <std::unique_ptr<UserData>> _Users;
-	UserData* _current;
-};
+	private:
+		std::vector <std::unique_ptr<UserData>> _Users;
+		UserData* _current;
+	};
+}

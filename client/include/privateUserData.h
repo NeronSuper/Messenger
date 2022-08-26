@@ -1,23 +1,23 @@
 #pragma once
 #include <string>
-#include <iostream>
 
-
-class PrivateUserData
+namespace Messanger
 {
-public:
-	PrivateUserData();
-	PrivateUserData(const std::string& login, const std::string& password);
+	class PrivateUserData
+	{
+	public:
+		PrivateUserData();
+		PrivateUserData(const std::string& login, const std::string& password);
 
-	const std::string& getLogin() const;
-	const std::string& getPassword() const;
+		const std::string& getLogin() const;
+		const std::string& getPassword() const;
 
-	void setLogin(const std::string& login);
-	void setPassword(const std::string& password);
+		void setLogin(const std::string& login);
+		void setPassword(const std::string& password);
 
-private:
-	std::pair<std::string, std::string> _pData; 
+	private:
+		std::pair<std::string, std::string> _pData; 
 
-	
-};
-
+		
+	};
+}

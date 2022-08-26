@@ -1,20 +1,21 @@
 #pragma once
 #include <string>
-#include <ctime>
 
-class Message
+namespace Messanger
 {
-public:
-	Message();
-	Message(const Message& copy);
-	Message(const std::string&,	const std::string&);
+	class Message
+	{
+	public:
+		Message();
+		Message(const Message& copy);
+		Message(const std::string&,	const std::string&);
 
-	const std::string& getOwner() const;
-	const std::string& getMess() const;
+		const std::string& getOwner() const;
+		const std::string& getMess() const;
 
 
-private:
-	std::pair<std::string, std::string> _data;
+	private:
+		std::pair<std::string, std::string> _data;
 
-};
-
+	};
+}

@@ -7,24 +7,27 @@
 #include "../src/message.cpp"
 #include "../src/privateUserData.cpp"
 
-class UserData : public PrivateUserData
+namespace Messanger
 {
-public:
-	UserData();
-	UserData(const std::string& login, const std::string& password);
-	
-	
-	const std::vector<Message>& getMessages(std::string login);
+	class UserData : public PrivateUserData
+	{
+	public:
+		UserData();
+		UserData(const std::string& login, const std::string& password);
+		
+		
+		const std::vector<Message>& getMessages(std::string login);
 
 
-	void setLogin(const std::string& login);
-	void setPassword(const std::string& password);
+		void setLogin(const std::string& login);
+		void setPassword(const std::string& password);
 
 
-	void addMessage(const std::string& receiver, const Message& mes);
+		void addMessage(const std::string& receiver, const Message& mes);
 
-private:
+	private:
 
-	std::map<std::string, std::vector<Message>> _messages;
-	
-};
+		std::map<std::string, std::vector<Message>> _messages;
+		
+	};
+}

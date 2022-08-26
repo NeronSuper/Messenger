@@ -1,31 +1,34 @@
 #include "../include/privateUserData.h"
 
-PrivateUserData::PrivateUserData()
+namespace Messanger
 {
-	_pData = {};
-}
+	PrivateUserData::PrivateUserData()
+	{
+		_pData = {};
+	}
 
-PrivateUserData::PrivateUserData(const std::string& login, const std::string& password)
-	: _pData(login, password)
-{
-}
+	PrivateUserData::PrivateUserData(const std::string& login, const std::string& password)
+		: _pData(login, password)
+	{
+	}
 
-const std::string& PrivateUserData::getLogin() const
-{
-	return _pData.first;
-}
+	const std::string& PrivateUserData::getLogin() const
+	{
+		return _pData.first;
+	}
 
-const std::string& PrivateUserData::getPassword() const
-{
-	return _pData.second;
-}
+	const std::string& PrivateUserData::getPassword() const
+	{
+		return _pData.second;
+	}
 
-void PrivateUserData::setLogin(const std::string& login)
-{
-	_pData.first = login;
-}
+	void PrivateUserData::setLogin(const std::string& login)
+	{
+		_pData.first = login;
+	}
 
-void PrivateUserData::setPassword(const std::string& password)
-{
-	_pData.second = password;
+	void PrivateUserData::setPassword(const std::string& password)
+	{
+		_pData.second = password;
+	}
 }

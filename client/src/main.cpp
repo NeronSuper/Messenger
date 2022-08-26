@@ -6,7 +6,7 @@
 
 auto main()->int
 {
-	BaseApp *baseApp = BaseApp::instance();
+	Messanger::BaseApp *baseApp = Messanger::BaseApp::instance();
 	
 	baseApp->start();
 
