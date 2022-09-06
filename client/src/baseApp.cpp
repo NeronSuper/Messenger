@@ -15,12 +15,9 @@ namespace Messanger
 		return _instance;
 	}
 
-	BaseApp::BaseApp() 
+	BaseApp::BaseApp()
+		: _Users(), _current(nullptr), _ServerSocket(INVALID_SOCKET)
 	{
-		//_Users = {};
-		_current = nullptr;
-		_ServerSocket = INVALID_SOCKET;
-
 		initSocket();
 	}
 
