@@ -1,6 +1,16 @@
 #pragma once
 
 
+#define WIN32_LEAN_AND_MEAN
+
+#include <WinSock2.h>
+#include <WS2tcpip.h>
+
+#define PORT "666"
+
+#pragma comment(lib, "ws2_32.lib")
+
+
 #include <vector>
 #include <string>
 #include <fstream>
@@ -29,6 +39,8 @@ namespace Messanger
 		
 	public:
 
+		void initSocket();
+
 		void start();
 		void signIn();
 		void signUp();
@@ -43,9 +55,11 @@ namespace Messanger
 		bool isUser(const std::string& login);
 		bool isPassword(const std::string& login, const std::string& password);
 		UserData* findUser(const std::string& login);
+		
 
 	private:
 		std::vector <std::unique_ptr<UserData>> _Users;
 		UserData* _current;
+		SOCKET _ServerSocket;
 	};
 }

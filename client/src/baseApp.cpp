@@ -1,6 +1,7 @@
 #include "../include/baseApp.h"
 
 
+
 namespace Messanger
 {
 	BaseApp* BaseApp::_instance = 0;
@@ -14,22 +15,70 @@ namespace Messanger
 		return _instance;
 	}
 
-	BaseApp::BaseApp() {}
+	BaseApp::BaseApp() 
+	{
+		//_Users = {};
+		_current = nullptr;
+		_ServerSocket = INVALID_SOCKET;
+
+		initSocket();
+	}
+
+	void BaseApp::initSocket()
+	{
+		WSADATA wsaData;
+		ADDRINFO hints;
+		ADDRINFO* addrResult = NULL;
+
+		int iResult;
+
+		iResult = WSAStartup(MAKEWORD(2,2), &wsaData);
+		if (iResult != 0) 
+		{
+			std::cout << "WSAStartup failed, result = " << iResult << std::endl;
+		}
+		
+		ZeroMemory(&hints, sizeof(hints));
+		hints.ai_family = AF_INET;
+		hints.ai_socktype = SOCK_STREAM;
+		hints.ai_protocol = IPPROTO_TCP;
+
+		iResult = getaddrinfo("localhost", PORT, &hints, &addrResult);
+		if (iResult != 0) 
+		{
+			std::cout << "getaddrinfo failed, result = " << iResult << std::endl;
+			WSACleanup();
+		}
+
+		_ServerSocket = socket(addrResult->ai_family, addrResult->ai_socktype, addrResult->ai_protocol);
+		if (_ServerSocket == INVALID_SOCKET) 
+		{
+			std::cout << "Socket creation failed" << std::endl;
+			freeaddrinfo(addrResult);
+			WSACleanup();
+		}
+
+		iResult = connect(_ServerSocket, addrResult->ai_addr, (int)addrResult->ai_addrlen);
+		if (iResult == SOCKET_ERROR) 
+		{
+			std::cout << "Unable connect to server" << std::endl;
+			closesocket(_ServerSocket);
+			_ServerSocket = INVALID_SOCKET;
+			freeaddrinfo(addrResult);
+			WSACleanup();
+		}
+	}
 
 
 	void BaseApp::start()
 	{
-		void (*print_menu)() = []()
+
+		while(true)
 		{
 			std::system("cls");
 			std::cout << "1. Sign in\n";
 			std::cout << "2. Sign up\n";
 			std::cout << "3. Exit\n";
-		};
-
-		while(true)
-		{
-			print_menu();
 			
 			int response;
 			std::cin >> response;
