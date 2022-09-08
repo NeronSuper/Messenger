@@ -123,14 +123,15 @@ namespace Messanger
 		std::string login;
 		std::string password;
 		
+		char buffer[512];
+
 		do
 		{
-			//std::system("cls");
-			std::cout << "Login: ";
-			std::cin >> login;
+			recv(_ClientsSockets, buffer, BUFFER_SIZE, 0);
+			login = buffer;
 
-			std::cout << "Password: ";
-			std::cin >> password;
+			recv(_ClientsSockets, buffer, BUFFER_SIZE, 0);
+			password = buffer;
 
 			if (!isPassword(login, password))
 				continue;
@@ -296,9 +297,13 @@ namespace Messanger
 		for (int i = 0; i < _Users.size(); ++i)
 		{
 			if (_Users[i]->getLogin() == login && _Users[i]->getPassword() == password)
+			{
+				send(_ClientsSockets, "1", 1, 0);
 				return true;
+			}
 		}
 
+		send(_ClientsSockets, "0", 1, 0);
 		return false;
 	}
 

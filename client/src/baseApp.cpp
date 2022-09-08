@@ -115,6 +115,9 @@ namespace Messanger
 			std::cout << "Password: ";
 			std::cin >> password;
 
+			send(_ServerSocket, login.c_str(), login.size(), 0);
+			send(_ServerSocket, password.c_str(), password.size(), 0);
+			
 			if (!isPassword(login, password))
 				continue;
 
@@ -271,13 +274,10 @@ namespace Messanger
 
 	bool BaseApp::isPassword(const std::string& login, const std::string& password)
 	{
-		for (int i = 0; i < _Users.size(); ++i)
-		{
-			if (_Users[i]->getLogin() == login && _Users[i]->getPassword() == password)
-				return true;
-		}
+		char buffer[BUFFER_SIZE];
+		recv(_ServerSocket, buffer, BUFFER_SIZE, 0);
 
-		return false;
+		return static_cast<int>(buffer[0]) - 48;
 	}
 
 	UserData* BaseApp::findUser(const std::string& login)
