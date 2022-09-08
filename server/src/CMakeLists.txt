@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
-project(Messanger_client LANGUAGES CXX)
+project(Messanger_server LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17) 
 

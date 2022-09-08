@@ -61,6 +61,6 @@ namespace Messanger
 	private:
 		std::vector <std::unique_ptr<UserData>> _Users;
 		UserData* _current;
-		SOCKET _ServerSocket;
+		SOCKET _ClientsSockets;
 	};
 }

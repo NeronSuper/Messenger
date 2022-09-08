@@ -16,7 +16,7 @@ namespace Messanger
 	}
 
 	BaseApp::BaseApp()
-		: _Users(), _current(nullptr), _ServerSocket(INVALID_SOCKET)
+		: _Users(), _current(nullptr), _ClientsSockets(INVALID_SOCKET)
 	{
 		initSocket();
 	}
@@ -26,6 +26,8 @@ namespace Messanger
 		WSADATA wsaData;
 		ADDRINFO hints;
 		ADDRINFO* addrResult = NULL;
+
+		SOCKET ListenSocket;
 
 		int iResult;
 
@@ -47,23 +49,43 @@ namespace Messanger
 			WSACleanup();
 		}
 
-		_ServerSocket = socket(addrResult->ai_family, addrResult->ai_socktype, addrResult->ai_protocol);
-		if (_ServerSocket == INVALID_SOCKET) 
+		ListenSocket = socket(addrResult->ai_family, addrResult->ai_socktype, addrResult->ai_protocol);
+		if (ListenSocket == INVALID_SOCKET) 
 		{
 			std::cout << "Socket creation failed" << std::endl;
 			freeaddrinfo(addrResult);
 			WSACleanup();
 		}
 
-		iResult = connect(_ServerSocket, addrResult->ai_addr, (int)addrResult->ai_addrlen);
+		iResult = bind(ListenSocket, addrResult->ai_addr, (int)addrResult->ai_addrlen);
 		if (iResult == SOCKET_ERROR) 
 		{
-			std::cout << "Unable connect to server" << std::endl;
-			closesocket(_ServerSocket);
-			_ServerSocket = INVALID_SOCKET;
+			std::cout << "Binding socket failed" << std::endl;
+			closesocket(ListenSocket);
+			ListenSocket = INVALID_SOCKET;
 			freeaddrinfo(addrResult);
 			WSACleanup();
 		}
+
+		iResult = listen(ListenSocket, SOMAXCONN);
+		if (iResult == SOCKET_ERROR)
+		{
+			std::cout << "Listening socket failed" << std::endl;
+			closesocket(ListenSocket);
+			freeaddrinfo(addrResult);
+			WSACleanup();
+		}
+
+		_ClientsSockets = accept(ListenSocket, NULL, NULL);
+		if (_ClientsSockets == INVALID_SOCKET)
+		{
+			std::cout << "Accepting socket failed" << std::endl;
+			closesocket(ListenSocket);
+			freeaddrinfo(addrResult);
+			WSACleanup();
+		}
+
+		std::cout << "Client is connected\n";
 	}
 
 
@@ -72,28 +94,23 @@ namespace Messanger
 
 		while(true)
 		{
-			std::system("cls");
-			std::cout << "1. Sign in\n";
-			std::cout << "2. Sign up\n";
-			std::cout << "3. Exit\n";
-			
 			int response;
-			std::cin >> response;
+			
+			char buffer[BUFFER_SIZE];
+			recv(_ClientsSockets, buffer, BUFFER_SIZE, 0);
+
+			response = static_cast<int>(buffer[0]) - 48;
+
 
 			switch(response)
 			{
 				case 1:
-					send(_ServerSocket, "1", BUFFER_SIZE, 0);
 					signIn();
-
 					break;
 				case 2:
-					send(_ServerSocket, "2", BUFFER_SIZE, 0);
 					signUp();
-
 					break;
 				case 3:
-					send(_ServerSocket, "3", BUFFER_SIZE, 0);
 					return;
 				default:
 					break;
@@ -108,7 +125,7 @@ namespace Messanger
 		
 		do
 		{
-			std::system("cls");
+			//std::system("cls");
 			std::cout << "Login: ";
 			std::cin >> login;
 
@@ -130,18 +147,13 @@ namespace Messanger
 	{
 		std::string login;
 		std::string password;
+
 		
+		char buffer[BUFFER_SIZE];
 		do
 		{
-			std::system("cls");
-			std::cout << "I'Am here\n";
-			std::cout << "Login: ";
-			std::cin >> login;
-
-			std::cout << "Password: ";
-			std::cin >> password;
-
-			send(_ServerSocket, login.c_str(), login.size(), 0);
+			recv(_ClientsSockets, buffer, BUFFER_SIZE, 0);
+			login = buffer;
 
 			if (isUser(login)) // if user exists
 				continue;
@@ -150,8 +162,11 @@ namespace Messanger
 			break;
 		}
 		while(true);
+
+		recv(_ClientsSockets, buffer, BUFFER_SIZE, 0);
+		password = buffer;
 		
-		send(_ServerSocket, password.c_str(), password.size(), 0);
+		addUser({login, password});
 	}
 
 	void BaseApp::inAccount(UserData* user)
@@ -263,10 +278,17 @@ namespace Messanger
 
 	bool BaseApp::isUser(const std::string& login)
 	{
-		char buffer[BUFFER_SIZE];
-		recv(_ServerSocket, buffer, BUFFER_SIZE, 0);
+		for (int i = 0; i < _Users.size(); ++i)
+		{
+			if (_Users[i]->getLogin() == login)
+			{
+				send(_ClientsSockets, "1", 1, 0);
+				return true;
+			}
+		}
 
-		return static_cast<int>(buffer[0]) - 48;
+		send(_ClientsSockets, "0", 1, 0);
+		return false;
 	}
 
 	bool BaseApp::isPassword(const std::string& login, const std::string& password)
