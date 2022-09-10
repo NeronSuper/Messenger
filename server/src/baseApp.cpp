@@ -210,6 +210,7 @@ namespace Messanger
 
 	void BaseApp::addUser(const UserData& user)
 	{
+		std::cout << "adding user like: " << user.getLogin() << " " << user.getPassword() << "\n";
 		_Users.push_back(std::make_unique<UserData>(user));
 	}
 
@@ -296,12 +297,16 @@ namespace Messanger
 	{
 		for (int i = 0; i < _Users.size(); ++i)
 		{
+			std::cout << "User #" << i + 1 << ": " << 
+			_Users[i]->getLogin() << " " <<
+			_Users[i]->getPassword() << "\n";
 			if (_Users[i]->getLogin() == login && _Users[i]->getPassword() == password)
 			{
 				send(_ClientsSockets, "1", 1, 0);
 				return true;
 			}
 		}
+		std::cout << "finished checking\n";
 
 		send(_ClientsSockets, "0", 1, 0);
 		return false;

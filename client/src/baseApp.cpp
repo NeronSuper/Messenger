@@ -115,8 +115,8 @@ namespace Messanger
 			std::cout << "Password: ";
 			std::cin >> password;
 
-			send(_ServerSocket, login.c_str(), login.size(), 0);
-			send(_ServerSocket, password.c_str(), password.size(), 0);
+			send(_ServerSocket, login.c_str(), BUFFER_SIZE, 0);
+			send(_ServerSocket, password.c_str(), BUFFER_SIZE, 0);
 			
 			if (!isPassword(login, password))
 				continue;
@@ -126,7 +126,7 @@ namespace Messanger
 		}
 		while(true);
 
-		inAccount(findUser(login));
+		inAccount(new UserData(login, password));
 	}
 
 	void BaseApp::signUp()
@@ -144,7 +144,7 @@ namespace Messanger
 			std::cout << "Password: ";
 			std::cin >> password;
 
-			send(_ServerSocket, login.c_str(), login.size(), 0);
+			send(_ServerSocket, login.c_str(), BUFFER_SIZE, 0);
 
 			if (isUser(login)) // if user exists
 				continue;
@@ -154,7 +154,7 @@ namespace Messanger
 		}
 		while(true);
 		
-		send(_ServerSocket, password.c_str(), password.size(), 0);
+		send(_ServerSocket, password.c_str(), BUFFER_SIZE, 0);
 	}
 
 	void BaseApp::inAccount(UserData* user)
