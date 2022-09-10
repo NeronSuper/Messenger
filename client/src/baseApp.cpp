@@ -16,7 +16,7 @@ namespace Messanger
 	}
 
 	BaseApp::BaseApp()
-		: _Users(), _current(nullptr), _ServerSocket(INVALID_SOCKET)
+		: _current(nullptr), _ServerSocket(INVALID_SOCKET)
 	{
 		initSocket();
 	}
@@ -177,12 +177,15 @@ namespace Messanger
 			switch(response)
 			{
 				case '1':
+					send(_ServerSocket, "1", BUFFER_SIZE, 0);
 					sendMessage();
 					break;
 				case '2':
+					send(_ServerSocket, "2", BUFFER_SIZE, 0);
 					lookAtChat();
 					break;
 				case '3':
+					send(_ServerSocket, "3", BUFFER_SIZE, 0);
 					return;
 				case '4':
 					// need throw
@@ -195,10 +198,6 @@ namespace Messanger
 	}
 
 
-	void BaseApp::addUser(const UserData& user)
-	{
-		_Users.push_back(std::make_unique<UserData>(user));
-	}
 
 	void BaseApp::sendMessage()
 	{
@@ -215,6 +214,8 @@ namespace Messanger
 			std::cin.ignore(255, '\n');
 			std::getline(std::cin, message);
 
+			send(_ServerSocket, receiver.c_str(), BUFFER_SIZE, 0);
+
 			if (!isUser(receiver))
 				continue;
 
@@ -223,11 +224,7 @@ namespace Messanger
 		}
 		while(true);
 
-
-		Message tmpMessage(_current->getLogin(), message);
-
-		findUser(_current->getLogin())->addMessage(receiver, tmpMessage);
-		findUser(receiver)->addMessage(_current->getLogin(), tmpMessage);
+		send(_ServerSocket, message.c_str(), BUFFER_SIZE, 0);
 	}
 
 	void BaseApp::lookAtChat()
@@ -238,6 +235,8 @@ namespace Messanger
 			std::system("cls");
 			std::cout << "Chat: ";
 			std::cin >> chat;
+
+			send(_ServerSocket, chat.c_str(), BUFFER_SIZE, 0);
 
 			if (!isUser(chat))
 				continue;
@@ -251,13 +250,29 @@ namespace Messanger
 
 	void BaseApp::printMessages(const std::string& chat)
 	{
-		auto messages = _current->getMessages(chat);
+		char buffer[BUFFER_SIZE];
+
 
 		std::system("cls");
 		std::cout << "Your chat with " << chat << '\n';
-		for(int i = 0; i < messages.size(); ++i)
+
+		recv(_ServerSocket, buffer, BUFFER_SIZE, 0);
+		int size_messages;
+		std::stringstream ss;
+		ss << buffer;
+		ss >> size_messages;
+
+		for(int i = 0; i < size_messages; ++i)
 		{
-			std::cout << messages[i].getOwner() << ": " << messages[i].getMess() << '\n';
+			std::string login;
+			recv(_ServerSocket, buffer, BUFFER_SIZE, 0);
+			login = buffer;
+
+			std::string message;
+			recv(_ServerSocket, buffer, BUFFER_SIZE, 0);
+			message = buffer;
+
+			std::cout << login << ": " << message << '\n';
 		}
 
 		std::string tmp;
@@ -280,14 +295,5 @@ namespace Messanger
 		return static_cast<int>(buffer[0]) - 48;
 	}
 
-	UserData* BaseApp::findUser(const std::string& login)
-	{
-		for (int i = 0; i < _Users.size(); ++i)
-		{
-			if (_Users[i]->getLogin() == login)
-				return _Users[i].get();
-		}
-
-		return nullptr;
-	}
+	
 }

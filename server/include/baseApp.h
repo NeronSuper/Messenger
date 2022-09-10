@@ -20,6 +20,7 @@
 #include <memory>
 #include <conio.h>
 #include <Windows.h>
+#include <sstream>
 
 #include "../src/userData.cpp"
 
