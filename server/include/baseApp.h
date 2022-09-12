@@ -21,6 +21,7 @@
 #include <conio.h>
 #include <Windows.h>
 #include <sstream>
+#include <thread>
 
 #include "../src/userData.cpp"
 
@@ -41,27 +42,20 @@ namespace Messanger
 		
 	public:
 
-		void initSocket();
+		void addSocket(const SOCKET& ClientSocket);
+		void addUser(const UserData& user);
+		UserData* findUser(const std::string& login);
+		void sendMessage(const Message& mes, UserData* sender, UserData* receiver);
 
-		void start();
-		void signIn();
-		void signUp();
-		void inAccount(UserData* user);
-
-		void sendMessage();
-		void lookAtChat();
-		void printMessages(const std::string& chat);
+		
 	public:
 
-		void addUser(const UserData& user);
-		bool isUser(const std::string& login);
-		bool isPassword(const std::string& login, const std::string& password);
-		UserData* findUser(const std::string& login);
+		bool isUser(const std::string& login, const SOCKET& ClientSocket);
+		bool isPassword(const std::string& login, const std::string& password, const SOCKET& ClientSocket);
 		
 
 	private:
 		std::vector <std::unique_ptr<UserData>> _Users;
-		UserData* _current;
-		SOCKET _ClientsSockets;
+		std::vector<SOCKET> _ClientsSockets;
 	};
 }
