@@ -1,14 +1,11 @@
-#include "baseApp.cpp"
-
-
+#include "run.cpp"
 
 
 
 
 auto main()->int
 {
-	Messanger::BaseApp *baseApp = Messanger::BaseApp::instance();
-	baseApp->start();
+	Messanger::run();
 
 	return 0;
 }

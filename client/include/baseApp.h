@@ -41,24 +41,12 @@ namespace Messanger
 		
 	public:
 
-		void initSocket();
-
-		void start();
-		void signIn();
-		void signUp();
-		void inAccount(UserData* user);
-
-		void sendMessage();
-		void lookAtChat();
-		void printMessages(const std::string& chat);
-	public:
-
-		bool isUser(const std::string& login);
-		bool isPassword(const std::string& login, const std::string& password);
+		bool isUser(const std::string& login, const SOCKET& ServerSocket);
+		bool isPassword(const std::string& login, const std::string& password, const SOCKET& ServerSocket);
 		
 
 	private:
-		UserData* _current;
-		SOCKET _ServerSocket;
+		
+		
 	};
 }
