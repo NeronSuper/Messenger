@@ -58,7 +58,9 @@ namespace Messanger
 
         SOCKET ServerSocket = initSocket();
 
-		CLIBaseApp cliBaseApp(ServerSocket);
+		_baseApp->ServerSocket() = ServerSocket;
+
+		CLIBaseApp cliBaseApp;
 		cliBaseApp.start();
 	}
 }

@@ -6,7 +6,7 @@ namespace Messanger
     class CLIBaseApp
     {
     public:
-        CLIBaseApp(SOCKET ClientSocket);
+        CLIBaseApp();
 
         void start();
 
@@ -20,10 +20,13 @@ namespace Messanger
 		void lookAtChat();
 		void printMessages(const std::string& chat);
 
+        //void listOfChats();
+        //void openChat();
+
     private:
         BaseApp* _baseApp;
-        UserData* _currentUser;
-        SOCKET _ServerSocket;
+        
+        
         
     };
 }
