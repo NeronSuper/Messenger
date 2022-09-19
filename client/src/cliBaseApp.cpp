@@ -132,6 +132,7 @@ namespace Messanger
 					break;
 				case '3':
 					send(_baseApp->ServerSocket(), "3", BUFFER_SIZE, 0);
+					_baseApp->SetCurrentUser(nullptr);
 					return;
 				case '4':
 					// need throw
@@ -140,7 +141,6 @@ namespace Messanger
 			}
 		}
 
-		_baseApp->SetCurrentUser(nullptr);
 	}
 
 

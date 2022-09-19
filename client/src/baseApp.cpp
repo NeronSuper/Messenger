@@ -53,6 +53,7 @@ namespace Messanger
 		
 		for (int i = 0; i < size_chats; ++i)
 		{
+			
 			std::string tmp_userName;
 			std::vector<Message> tmp_messages;
 
@@ -61,8 +62,10 @@ namespace Messanger
 
 			int size_messages = 0;
 			recv(_ServerSocket, buffer, BUFFER_SIZE, 0);
+			ss.clear();
 			ss << buffer;
 			ss >> size_messages;
+
 
 			for (int i = 0; i < size_messages; ++i)
 			{
@@ -71,6 +74,9 @@ namespace Messanger
 			}
 
 			_currentUser->getMessages()[tmp_userName] = tmp_messages;
+
+
+			
 		}
 	}
 
