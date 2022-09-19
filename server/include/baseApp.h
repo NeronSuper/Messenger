@@ -54,6 +54,9 @@ namespace Messanger
 		bool isPassword(const std::string& login, const std::string& password, const SOCKET& ClientSocket);
 		
 
+
+		void updateUserData(UserData* _currentUser, const SOCKET& ClientSocket);
+
 	private:
 		std::vector <std::unique_ptr<UserData>> _Users;
 		std::vector<SOCKET> _ClientsSockets;

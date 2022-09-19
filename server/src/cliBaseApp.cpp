@@ -164,23 +164,8 @@ namespace Messanger
 		}
 		while(true);
 
-		printMessages(chat);
+		_baseApp->updateUserData(_currentUser, _currentSocket);
 	}
 
-	void CLIBaseApp::printMessages(const std::string& chat)
-	{
-		char buffer[BUFFER_SIZE];
-
-		auto messages = _currentUser->getMessages(chat);
-
-		std::stringstream ss;
-		ss << messages.size();
-		ss >> buffer;
-		send(_currentSocket, buffer, BUFFER_SIZE, 0);
-		for(int i = 0; i < messages.size(); ++i)
-		{
-			send(_currentSocket, messages[i].getOwner().c_str(), BUFFER_SIZE, 0);
-			send(_currentSocket, messages[i].getMess().c_str(), BUFFER_SIZE, 0);
-		}
-	}
+	
 }

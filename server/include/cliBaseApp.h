@@ -18,7 +18,6 @@ namespace Messanger
 
 		void sendMessage();
 		void lookAtChat();
-		void printMessages(const std::string& chat);
 
     private:
         BaseApp* _baseApp;

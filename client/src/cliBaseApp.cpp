@@ -191,34 +191,17 @@ namespace Messanger
 		}
 		while(true);
 
+		_baseApp->updateUserData();
 		printMessages(chat);
 	}
 
 	void CLIBaseApp::printMessages(const std::string& chat)
 	{
-		char buffer[BUFFER_SIZE];
+		UserData* _currentUser = _baseApp->GetCurrentUser();
 
-
-		std::system("cls");
-		std::cout << "Your chat with " << chat << '\n';
-
-		recv(_baseApp->ServerSocket(), buffer, BUFFER_SIZE, 0);
-		int size_messages;
-		std::stringstream ss;
-		ss << buffer;
-		ss >> size_messages;
-
-		for(int i = 0; i < size_messages; ++i)
+		for (const auto& tmp : _currentUser->getMessages()[chat])
 		{
-			std::string login;
-			recv(_baseApp->ServerSocket(), buffer, BUFFER_SIZE, 0);
-			login = buffer;
-
-			std::string message;
-			recv(_baseApp->ServerSocket(), buffer, BUFFER_SIZE, 0);
-			message = buffer;
-
-			std::cout << login << ": " << message << '\n';
+			std::cout << tmp.getOwner() << ": " << tmp.getMess() << std::endl;
 		}
 
 		std::string tmp;

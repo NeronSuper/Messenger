@@ -37,35 +37,41 @@ namespace Messanger
 		return static_cast<int>(buffer[0]) - 48;
 	}
 
-	void BaseApp::updateUserData(UserData* user)
+	void BaseApp::updateUserData()
 	{
-
-
-		//receive all messages which has user
 		char buffer[BUFFER_SIZE];
 
-		recv(_ServerSocket, buffer, BUFFER_SIZE, 0);
-		int size_messages;
+		//receive all messages which has user
 		std::stringstream ss;
+
+
+		int size_chats = 0;
+		recv(_ServerSocket, buffer, BUFFER_SIZE, 0);
 		ss << buffer;
-		ss >> size_messages;
+		ss >> size_chats;
 
-		for(int i = 0; i < size_messages; ++i)
+		
+		for (int i = 0; i < size_chats; ++i)
 		{
-			std::string login;
-			recv(_ServerSocket, buffer, BUFFER_SIZE, 0);
-			login = buffer;
+			std::string tmp_userName;
+			std::vector<Message> tmp_messages;
 
-			std::string message;
 			recv(_ServerSocket, buffer, BUFFER_SIZE, 0);
-			message = buffer;
+			tmp_userName = buffer;
 
-			std::cout << login << ": " << message << '\n';
+			int size_messages = 0;
+			recv(_ServerSocket, buffer, BUFFER_SIZE, 0);
+			ss << buffer;
+			ss >> size_messages;
+
+			for (int i = 0; i < size_messages; ++i)
+			{
+				recv(_ServerSocket, buffer, BUFFER_SIZE, 0);
+				tmp_messages.push_back(Message(tmp_userName, buffer));
+			}
+
+			_currentUser->getMessages()[tmp_userName] = tmp_messages;
 		}
-
-		std::string tmp;
-		std::cin >> tmp; // just for wait
-
 	}
 
 	SOCKET& BaseApp::ServerSocket()
@@ -82,7 +88,7 @@ namespace Messanger
 		_currentUser = ud;
 	}
 
-	const UserData* BaseApp::GetCurrentUser() const
+	UserData* BaseApp::GetCurrentUser()
 	{
 		return _currentUser;
 	}

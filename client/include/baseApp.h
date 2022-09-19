@@ -44,7 +44,7 @@ namespace Messanger
 		bool isUser(const std::string& login, const SOCKET& ServerSocket);
 		bool isPassword(const std::string& login, const std::string& password, const SOCKET& ServerSocket);
 		
-		void updateUserData(UserData* user);
+		void updateUserData();
 
 	public:
 
@@ -52,7 +52,7 @@ namespace Messanger
 
 
 		void SetCurrentUser(UserData* ud);
-		const UserData* GetCurrentUser() const;
+		UserData* GetCurrentUser();
 
 	private:
 		SOCKET _ServerSocket;

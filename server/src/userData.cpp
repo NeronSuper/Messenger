@@ -13,9 +13,9 @@ namespace Messanger
 	}
 
 
-	const std::vector<Message>& UserData::getMessages(std::string login) 
+	std::map<std::string, std::vector<Message>>& UserData::getMessages() 
 	{
-		return _messages[login];
+		return _messages;
 	}
 
 	void UserData::setLogin(const std::string& login)

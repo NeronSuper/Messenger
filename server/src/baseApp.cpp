@@ -77,4 +77,40 @@ namespace Messanger
 		send(ClientSocket, "0", 1, 0);
 		return false;
 	}
+
+	void BaseApp::updateUserData(UserData* _currentUser, const SOCKET& ClientSocket)
+	{
+		char buffer[BUFFER_SIZE];
+
+		//send all messages which has user
+		std::stringstream ss;
+
+
+		int size_chats = static_cast<int>(_currentUser->getMessages().size());
+		ss << size_chats;
+		ss >> buffer;
+		send(ClientSocket, buffer, BUFFER_SIZE, 0);
+
+
+
+		
+		for (auto map_iter = _currentUser->getMessages().begin(); map_iter != _currentUser->getMessages().end(); ++map_iter)
+		{
+			std::string tmp_userName = map_iter->first;
+			std::vector<Message> tmp_messages = map_iter->second;
+
+			send(ClientSocket, tmp_userName.c_str(), BUFFER_SIZE, 0);
+			
+			int size_messages = static_cast<int>(tmp_messages.size());
+			ss << size_messages;
+			ss >> buffer;
+			send(ClientSocket, buffer, BUFFER_SIZE, 0);
+
+			for (auto tmp_messages_iter = tmp_messages.begin(); tmp_messages_iter != tmp_messages.end(); ++tmp_messages_iter)
+			{
+				send(ClientSocket, tmp_messages_iter->getMess().c_str(), BUFFER_SIZE, 0);
+			}
+
+		}
+	}
 }
