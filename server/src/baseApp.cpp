@@ -27,7 +27,7 @@ namespace Messanger
 
 	void BaseApp::addUser(const UserData& user)
 	{
-		std::cout << "adding user like: " << user.getLogin() << " " << user.getPassword() << "\n";
+		std::cout << "Added user: " << user.getLogin() << " " << user.getPassword() << "\n";
 		_Users.push_back(std::make_unique<UserData>(user));
 	}
 
@@ -105,12 +105,11 @@ namespace Messanger
 			int size_messages = static_cast<int>(tmp_messages.size());
 			ss << size_messages;
 			ss >> buffer;
-			std::cout << "size_messages: " << buffer << "\n" << "tmp_messages.size(): " << tmp_messages.size() << "\n";
 			send(ClientSocket, buffer, BUFFER_SIZE, 0);
 
 			for (auto tmp_messages_iter = tmp_messages.begin(); tmp_messages_iter != tmp_messages.end(); ++tmp_messages_iter)
 			{
-				std::cout << tmp_messages_iter->getMess() << "\n";
+				send(ClientSocket, tmp_messages_iter->getOwner().c_str(), BUFFER_SIZE, 0);
 				send(ClientSocket, tmp_messages_iter->getMess().c_str(), BUFFER_SIZE, 0);
 			}
 

@@ -69,8 +69,11 @@ namespace Messanger
 
 			for (int i = 0; i < size_messages; ++i)
 			{
+				std::string tmp_senderName;
 				recv(_ServerSocket, buffer, BUFFER_SIZE, 0);
-				tmp_messages.push_back(Message(tmp_userName, buffer));
+				tmp_senderName = buffer;
+				recv(_ServerSocket, buffer, BUFFER_SIZE, 0);
+				tmp_messages.push_back(Message(tmp_senderName, buffer));
 			}
 
 			_currentUser->getMessages()[tmp_userName] = tmp_messages;
