@@ -138,41 +138,27 @@ namespace Messanger
 
 	}
 
-
-
-	void CLIBaseApp::sendMessage(const std::string& receiver)
+	void CLIBaseApp::startNewChat()
 	{
-		std::string message;
 		do
-		{	
-			std::cout << "Message: ";
-			std::cin.clear();
-			std::cin.ignore(255, '\n');
-			std::getline(std::cin, message);
+		{
+			std::string receiver;
 
-			if (message[0] == '\n')
+			std::system("cls");
+			std::cout << "Enter user name: ";
+			std::cin >> receiver;
+
+			send(_baseApp->ServerSocket(), receiver.c_str(), BUFFER_SIZE, 0);
+
+			if (!_baseApp->isUser(receiver, _baseApp->ServerSocket()))
 				continue;
-			
+
+
+			sendMessage(receiver);
+
 			break;
 		}
 		while(true);
-
-		send(_baseApp->ServerSocket(), message.c_str(), BUFFER_SIZE, 0);
-	}
-
-	void CLIBaseApp::printChat(const std::string& chat)
-	{
-		_baseApp->updateUserData();
-
-		UserData* _currentUser = _baseApp->GetCurrentUser();
-
-		for (const auto& tmp : _currentUser->getMessages()[chat])
-		{
-			std::cout << tmp.getOwner() << ": " << tmp.getMess() << std::endl;
-		}
-
-		std::string tmp;
-		std::cin >> tmp; // just for wait
 	}
 
 	void CLIBaseApp::listOfChats()
@@ -214,7 +200,8 @@ namespace Messanger
 				++iter;
 			}
 
-			openChat(iter->first); // opening chat
+
+			openChat(iter->first);
 
 			break;
 		}
@@ -223,17 +210,21 @@ namespace Messanger
 
 	void CLIBaseApp::openChat(const std::string& chat)
 	{
+		send(_baseApp->ServerSocket(), chat.c_str(), BUFFER_SIZE, 0);
+
 		do
 		{
+			std::system("cls");
 			printChat(chat);
 
-			std::system("cls");
 			std::cout << "1. Send a message\n";
 			std::cout << "0. Close the chat\n";
 
 			if (_kbhit())
 			{
+				send(_baseApp->ServerSocket(), "1", BUFFER_SIZE, 0);
 				char input_from_user = _getch();
+
 				switch (input_from_user)
 				{
 				case '1':
@@ -249,29 +240,46 @@ namespace Messanger
 					break;
 				}
 			}
+			else
+			{
+				send(_baseApp->ServerSocket(), "0", BUFFER_SIZE, 0);
+			}
+
+			Sleep(300);
 		}
 		while(true);
 	}
 
-	void CLIBaseApp::startNewChat()
+	void CLIBaseApp::printChat(const std::string& chat)
 	{
-		std::string receiver;
-		do
+		_baseApp->updateUserData();
+
+		UserData* _currentUser = _baseApp->GetCurrentUser();
+
+		for (const auto& tmp : _currentUser->getMessages()[chat])
 		{
-			std::system("cls");
-			std::cout << "Enter user name: ";
-			std::cin >> receiver;
+			std::cout << tmp.getOwner() << ": " << tmp.getMess() << std::endl;
+		}
+	}
 
-			send(_baseApp->ServerSocket(), receiver.c_str(), BUFFER_SIZE, 0);
+	void CLIBaseApp::sendMessage(const std::string& receiver)
+	{
+		std::string message;
+		do
+		{	
+			std::cout << "Message: ";
+			std::cin.clear();
+			std::cin.ignore(255, '\n');
+			std::getline(std::cin, message);
 
-			if (!_baseApp->isUser(receiver, _baseApp->ServerSocket()))
+			if (message[0] == '\n')
 				continue;
-
-
-			sendMessage(receiver);
-
+			
 			break;
 		}
 		while(true);
+
+		send(_baseApp->ServerSocket(), message.c_str(), BUFFER_SIZE, 0);
+		send(_baseApp->ServerSocket(), receiver.c_str(), BUFFER_SIZE, 0);
 	}
 }

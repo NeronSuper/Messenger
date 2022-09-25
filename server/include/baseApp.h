@@ -58,7 +58,7 @@ namespace Messanger
 		void updateUserData(UserData* _currentUser, const SOCKET& ClientSocket);
 
 	private:
-		std::vector <std::unique_ptr<UserData>> _Users;
+		std::vector<std::unique_ptr<UserData>> _Users;
 		std::vector<SOCKET> _ClientsSockets;
 	};
 }

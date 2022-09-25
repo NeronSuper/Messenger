@@ -14,19 +14,17 @@ namespace Messanger
 
 		void signIn();
 		void signUp();
+
 		void inAccount(UserData* user);
-
-		void sendMessage(const std::string& receiver);
-		void printChat(const std::string& chat);
-
+        void startNewChat();
         void listOfChats();
         void openChat(const std::string& chat);
-        void startNewChat();
+
+		void printChat(const std::string& chat);
+		void sendMessage(const std::string& receiver);
+
 
     private:
         BaseApp* _baseApp;
-        
-        
-        
     };
 }

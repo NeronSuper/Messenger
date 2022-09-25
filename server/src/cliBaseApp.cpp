@@ -104,10 +104,10 @@ namespace Messanger
 			switch(response)
 			{
 				case '1':
-					sendMessage();
+					startNewChat();
 					break;
 				case '2':
-					lookAtChat();
+					listOfChats();
 					break;
 				case '3':
 					return;
@@ -119,53 +119,116 @@ namespace Messanger
 		}
 	}
 
-    void CLIBaseApp::sendMessage()
+    void CLIBaseApp::startNewChat()
 	{
-		char buffer[BUFFER_SIZE];
-
-		std::string receiver;
 		do
-		{	
+		{
+			char buffer[BUFFER_SIZE];
+			std::string receiver;
+
 			recv(_currentSocket, buffer, BUFFER_SIZE, 0);
 			receiver = buffer;
 
 			if (!_baseApp->isUser(receiver, _currentSocket))
 				continue;
 
-			
+
+			sendMessage();
+
 			break;
 		}
 		while(true);
-
-        std::string tmpMessage;
-		recv(_currentSocket, buffer, BUFFER_SIZE, 0);
-		tmpMessage = buffer;
-
-		Message mes(_currentUser->getLogin(), tmpMessage);
-        UserData* user_receiver = _baseApp->findUser(receiver);
-
-		_baseApp->sendMessage(mes, _currentUser, user_receiver);
 	}
 
-	void CLIBaseApp::lookAtChat()
+	void CLIBaseApp::listOfChats()
+	{
+
+		do
+		{
+			_baseApp->updateUserData(_currentUser, _currentSocket);
+
+			char buffer[BUFFER_SIZE];
+			std::string tmp;
+			std::stringstream ss;
+			int input_from_user;
+
+			
+			recv(_currentSocket, buffer, BUFFER_SIZE, 0);
+			tmp = buffer;
+
+			ss << tmp;
+			ss >> input_from_user;
+			
+			if (input_from_user == 0)
+			{
+				return;
+			}
+
+			openChat();
+
+			break;
+		}
+		while(true);
+	}
+
+	void CLIBaseApp::openChat()
 	{
 		char buffer[BUFFER_SIZE];
 
 		std::string chat;
+		recv(_currentSocket, buffer, BUFFER_SIZE, 0);
+		chat = buffer;
+
+
+		char isKbhit;
 		do
 		{
+			printChat();
+
 			recv(_currentSocket, buffer, BUFFER_SIZE, 0);
-			chat = buffer;
+			isKbhit = buffer[0];
+			if (isKbhit == '1')
+			{
+				recv(_currentSocket, buffer, BUFFER_SIZE, 0);
+				char input_from_user = buffer[0];
+				
+				switch (input_from_user)
+				{
+				case '1':
+					sendMessage();
 
-			if (!_baseApp->isUser(chat, _currentSocket))
-				continue;
-
-			break;
+					break;
+				case '0':
+					return;
+				default:
+					break;
+				}
+			}
 		}
 		while(true);
+	}
 
+	void CLIBaseApp::printChat()
+	{
 		_baseApp->updateUserData(_currentUser, _currentSocket);
 	}
 
-	
+	void CLIBaseApp::sendMessage()
+	{
+		char buffer[BUFFER_SIZE];
+
+		std::string message;
+		std::string receiver;
+		
+		recv(_currentSocket, buffer, BUFFER_SIZE, 0);
+		message = buffer;
+
+		recv(_currentSocket, buffer, BUFFER_SIZE, 0);
+		receiver = buffer;
+
+		Message mes(_currentUser->getLogin(), message);
+        UserData* user_receiver = _baseApp->findUser(receiver);
+
+		_baseApp->sendMessage(mes, _currentUser, user_receiver);
+	}
 }

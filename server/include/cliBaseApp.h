@@ -14,10 +14,14 @@ namespace Messanger
 
 		void signIn();
 		void signUp();
-		void inAccount(UserData* user);
 
+		void inAccount(UserData* user);
+		void startNewChat();
+        void listOfChats();
+        void openChat();
+
+		void printChat();
 		void sendMessage();
-		void lookAtChat();
 
     private:
         BaseApp* _baseApp;

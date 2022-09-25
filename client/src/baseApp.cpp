@@ -72,6 +72,7 @@ namespace Messanger
 				std::string tmp_senderName;
 				recv(_ServerSocket, buffer, BUFFER_SIZE, 0);
 				tmp_senderName = buffer;
+				
 				recv(_ServerSocket, buffer, BUFFER_SIZE, 0);
 				tmp_messages.push_back(Message(tmp_senderName, buffer));
 			}
