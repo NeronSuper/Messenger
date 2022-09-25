@@ -106,16 +106,11 @@ namespace Messanger
 		{
 			std::system("cls");
 			std::cout << "Account name: " << _baseApp->GetCurrentUser()->getLogin() << '\n';
-			std::cout << "1. Send a message\n";
-			std::cout << "2. Look at a chat\n";
+			std::cout << "1. Start a new chat\n";
+			std::cout << "2. List of your chats\n";
 			std::cout << "3. Return\n";
 			std::cout << "4. Exit\n";
 
-
-			// std::cout << "1. List of your chats\n";
-			// std::cout << "2. Start a new chat\n";
-			// std::cout << "3. Log out of your account\n";
-			// std::cout << "4. Exit\n";
 			
 			char response;
 			std::cin >> response;
@@ -124,11 +119,11 @@ namespace Messanger
 			{
 				case '1':
 					send(_baseApp->ServerSocket(), "1", BUFFER_SIZE, 0);
-					sendMessage();
+					startNewChat();
 					break;
 				case '2':
 					send(_baseApp->ServerSocket(), "2", BUFFER_SIZE, 0);
-					lookAtChat();
+					listOfChats();
 					break;
 				case '3':
 					send(_baseApp->ServerSocket(), "3", BUFFER_SIZE, 0);
@@ -145,16 +140,11 @@ namespace Messanger
 
 
 
-	void CLIBaseApp::sendMessage()
+	void CLIBaseApp::sendMessage(const std::string& receiver)
 	{
-		std::string receiver;
 		std::string message;
 		do
 		{	
-			std::system("cls");
-			std::cout << "Receiver: ";
-			std::cin >> receiver;
-
 			std::cout << "Message: ";
 			std::cin.clear();
 			std::cin.ignore(255, '\n');
@@ -173,30 +163,10 @@ namespace Messanger
 		send(_baseApp->ServerSocket(), message.c_str(), BUFFER_SIZE, 0);
 	}
 
-	void CLIBaseApp::lookAtChat()
+	void CLIBaseApp::printChat(const std::string& chat)
 	{
-		std::string chat;
-		do
-		{
-			std::system("cls");
-			std::cout << "Chat: ";
-			std::cin >> chat;
-
-			send(_baseApp->ServerSocket(), chat.c_str(), BUFFER_SIZE, 0);
-
-			if (!_baseApp->isUser(chat, _baseApp->ServerSocket()))
-				continue;
-
-			break;
-		}
-		while(true);
-
 		_baseApp->updateUserData();
-		printMessages(chat);
-	}
 
-	void CLIBaseApp::printMessages(const std::string& chat)
-	{
 		UserData* _currentUser = _baseApp->GetCurrentUser();
 
 		for (const auto& tmp : _currentUser->getMessages()[chat])
@@ -206,5 +176,105 @@ namespace Messanger
 
 		std::string tmp;
 		std::cin >> tmp; // just for wait
+	}
+
+	void CLIBaseApp::listOfChats()
+	{
+		auto& messages = _baseApp->GetCurrentUser()->getMessages();
+
+		do
+		{
+			_baseApp->updateUserData();
+
+			std::system("cls");
+
+			int i = 1; // printing chats
+			for	(auto iter = messages.begin(); iter != messages.end(); ++i, ++iter)
+			{
+				std::cout << i << ". " << iter->first << "\n";
+			}
+			std::cout << "0. Return\n";
+
+			int input_from_user;
+			std::cin >> input_from_user;
+
+			if (input_from_user < 0 || input_from_user > i) // cheking if user wrote correct number
+				continue;
+
+			std::stringstream ss;
+			std::string tmp;
+			ss << input_from_user;
+			ss >> tmp;
+			send(_baseApp->ServerSocket(), tmp.c_str(), BUFFER_SIZE, 0);
+			if (input_from_user == 0)
+			{
+				return;
+			}
+
+			auto iter = messages.begin(); // picking correct user
+			for (i = 1; i != input_from_user; ++i)
+			{
+				++iter;
+			}
+
+			openChat(iter->first); // opening chat
+
+			break;
+		}
+		while(true);
+	}
+
+	void CLIBaseApp::openChat(const std::string& chat)
+	{
+		do
+		{
+			printChat(chat);
+
+			std::system("cls");
+			std::cout << "1. Send a message\n";
+			std::cout << "0. Close the chat\n";
+
+			if (_kbhit())
+			{
+				char input_from_user = _getch();
+				switch (input_from_user)
+				{
+				case '1':
+					send(_baseApp->ServerSocket(), "1", BUFFER_SIZE, 0);
+					sendMessage(chat);
+
+					break;
+				case '0':
+					send(_baseApp->ServerSocket(), "0", BUFFER_SIZE, 0);
+
+					return;
+				default:
+					break;
+				}
+			}
+		}
+		while(true);
+	}
+
+	void CLIBaseApp::startNewChat()
+	{
+		std::string receiver;
+		do
+		{
+			std::system("cls");
+			std::cout << "Enter user name: ";
+			std::cin >> receiver;
+
+			send(_baseApp->ServerSocket(), receiver.c_str(), BUFFER_SIZE, 0);
+
+			if (!_baseApp->isUser(receiver, _baseApp->ServerSocket()))
+				continue;
+
+
+			sendMessage(receiver);
+
+			break;
+		}
+		while(true);
 	}
 }
