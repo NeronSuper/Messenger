@@ -150,11 +150,8 @@ namespace Messanger
 			std::cin.ignore(255, '\n');
 			std::getline(std::cin, message);
 
-			send(_baseApp->ServerSocket(), receiver.c_str(), BUFFER_SIZE, 0);
-
-			if (!_baseApp->isUser(receiver, _baseApp->ServerSocket()))
+			if (message[0] == '\n')
 				continue;
-
 			
 			break;
 		}
